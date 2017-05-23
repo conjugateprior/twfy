@@ -17,7 +17,7 @@ add_key_to_renviron <- function(key){
 get_api_key <- function(){
   key <- Sys.getenv("TWFY_API_KEY")
   if (key == ""){
-    key <- readline(prompt="Paste in your API key (or just press return to stop)")
+    key <- readline(prompt="Paste in your API key (or just press return to stop) ")
     if (key != ""){
       Sys.setenv(TWFY_API_KEY=key)
       add_key_to_renviron(key)  # and set up for next time
