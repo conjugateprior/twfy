@@ -1,15 +1,41 @@
-set_api_key <- function(key){
-  twfy_api_key <<- key
-  twfy_access_point <<- "https://www.theyworkforyou.com/api/"
-  message("Api key set.")
+add_key_to_renviron <- function(key){
+  dotRenviron <- file.path(normalizePath("~/"), ".Renviron")
+  twfy_line <- paste0("TWFY_API_KEY=", key)
+  if (file.exists(dotRenviron)){
+    lines <- readLines(dotRenviron)
+    tline <- which(grepl("TWFY_API_KEY", lines))
+    if (length(tline) == 0) # no entry
+      lines <- c(lines, twfy_line) # add as a final line
+    else
+      lines[tline] <-  twfy_line # overwrite existing entry
+    writeLines(lines, dotRenviron)
+  } else {
+    writeLines(twfy_line, dotRenviron) # create file and write key to it
+  }
+}
+
+get_api_key <- function(){
+  key <- Sys.getenv("TWFY_API_KEY")
+  if (key == ""){
+    key <- readline(prompt="Paste in your API key (or just press return to stop)")
+    if (key != ""){
+      Sys.setenv(TWFY_API_KEY=key)
+      add_key_to_renviron(key)  # and set up for next time
+    } else
+      stop("Hint: you can request an API key from http://theyworkforyou.com/api/key")
+  }
+  key
 }
 
 call_api <- function(verb, ...){
   q <- list(...)
-  q <- q[sapply(q, function(x) !is.null(x))] # remove NULL values
+  if (length(q) > 0)
+    q <- q[sapply(q, function(x) !is.null(x))] # remove NULL values
 
   q$output <- "js"
-  q$key <- twfy_api_key
+  q$key <- get_api_key()
+
+  twfy_access_point <- "https://www.theyworkforyou.com/api/"
   resp <- httr::GET(paste0(twfy_access_point, verb), query=q)
   robj <- rjson::fromJSON(httr::content(resp))
   if ("error" %in% names(robj))
@@ -24,6 +50,16 @@ mkquery <- function(lst){
 
 ## ------
 
+#' Convert URL
+#'
+#' Converts a parliament.uk Hansard URL into a
+#' TheyWorkForYou one, if possible.
+#'
+#' @param url url you want to convert
+#'
+#' @return A list containing \code{gid} and \code{url}.
+#' @export
+#'
 convertURL <- function(url){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
@@ -31,47 +67,133 @@ convertURL <- function(url){
 
 ## ------
 
+#' Fetch a UK Parliament constituency
+#'
+#' @param name Name of constituency
+#' @param postcode A postcode
+#'
+#' One of \code{name} or \code{postcode} is required.
+#'
+#' @return A list with elements including constituency \code{name}, and identifiers
+#' @export
 getConstituency <- function(name=NULL, postcode=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
-# list, or if simplify: char vector
-getConstituencies <- function(simplify=TRUE){
-  cons <- call_api("getConstituencies")
-  if (simplify)
-    return(unlist(lapply(cons, function(x) x$name)))
-  cons
+#' Fetch UK parliament constituency names
+#'
+#' @param date Constituencies names as of this date
+#' @param search Search string
+#'
+#' @return a list of elements each of which has a \code{name},
+#'         or, if simplified, a character vector of constituency names.
+#' @export
+getConstituencies <- function(date=NULL, search=NULL){
+  params <- mkquery(as.list(match.call()))
+  cons <- do.call("call_api", params)
+  unlist(lapply(cons, function(x) x$name))
 }
 
 ## ------
 
+#' Return geometry information for a constituency
+#'
+#' Returns a list with elements \itemize{
+#'  \item{\code{parts}}{}
+#'  \item{\code{area}}{}
+#'  \item{\code{srid_n}}{}
+#'  \item{\code{min_e}}{}
+#'  \item{\code{centre_e}}{}
+#'  \item{\code{max_e}}{}
+#'  \item{\code{min_n}}{}
+#'  \item{\code{centre_n}}{}
+#'  \item{\code{max_n}}{}
+#'  \item{\code{min_lat}}{}
+#'  \item{\code{centre_lat}}{}
+#'  \item{\code{max_lat}}{}
+#'  \item{\code{min_long}}{}
+#'  \item{\code{centre_long}}{}
+#'  \item{\code{max_long}}{}
+#' }
+#'
+#' @param name Name of constituency
+#'
+#' @return A list with constituency \code{name} and geometry information (see Details)
+#' @export
 getGeometry <- function(name){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Get constituency boundary as a KML file
+#'
+#' NOTE: This is not implemented.
+#'
+#' @param name Name of constituency
+#'
+#' @return KML file
+#' @export
 getBoundary <- function(name){
-  stop("Not implemented. Returns a KML file apparently")
+  stop("Not yet implemented.")
 }
 
 ## ------
 
+
+#' Fetch a list of Lords
+#'
+#' @param date iso date, e.g. "1990-01-02", to compile the list for
+#' @param party Include only Lords from this party
+#' @param search A search term
+#'
+#' @return A List of Lords
+#' @export
 getLords <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
+  print(params)
   do.call("call_api", params)
 }
 
+
+#' Fetch information for a Lord
+#'
+#' @param id Lord identifier
+#'
+#' @return List of a Lord's periods in the upper house.
+#' @export
 getLord <- function(id){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch Members of Parliament
+#'
+#' Note that this will be the list as of today's date.  Before a general
+#' election, there are technically no MPs so the list will be empty.
+#' If this is not what you are expected, specify an earlier date.
+#'
+#' @param date Date for which the MP list is constructed
+#' @param party Restrict to MPs in this party
+#' @param search A search string
+#'
+#' @return A list of MPs or none if parliament is not in session.
+#' @export
 getMPs <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch information about an MP
+#'
+#' @param id An MP identifier
+#' @param postcode A postcode, used to identify a constituency and thereby an MP
+#' @param constituency Name of a constituency
+#' @param always_return whether to try to return an MP even if
+#'                      the seat is vacant or it before an election
+#'
+#' @return A list of information about an MP
+#' @export
 getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
                   always_return=NULL){
   params <- mkquery(as.list(match.call()))
@@ -79,43 +201,119 @@ getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
 }
 
 # fields should be comma separated values
+
+
+#' Fetch more information about a Member of Parliament
+#'
+#' Unless you want all the hundred or so fields available about an MP you should
+#' probably specify the ones you want in a comma-separated string to \code{fields}.
+#'
+#' @param id An MP identifier
+#' @param fields A comma separated character vector of field names
+#'
+#' @return A list of information about an MP
+#' @export
 getMPInfo <- function(id, fields=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch more information about a Member of Parliament
+#'
+#' @param ids A character vector of comma-separated MP identifiers
+#' @param fields A comma separated character vector of field names
+#'
+#' @return A list of list of MP information
+#' @export
 getMPsInfo <- function(ids, fields=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch information about a person
+#'
+#' @param id A person identifier
+#'
+#' @return A list of information about a person
+#' @export
 getPerson <- function(id){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+
+#' Fetch a member of the London Assembly
+#'
+#' @param id A MLA identifier
+#' @param postcode A postcode, which specifies a region represented by the MLA
+#' @param constituency Name of a constituency
+#' @param always_return whether to try to return an MP even if
+#'                      the seat is vacant or it before an election
+#'
+#' @return A list of information about an MLA
+#' @export
 getMLA <- function(id=NULL,postcode=NULL, constituency=NULL,
                    always_return=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch information about MLAs
+#'
+#' @param date The date for which the MLAs are required
+#' @param party Restrict MLAs to those in a party
+#' @param search A search string
+#'
+#' @return A list of lists of MLA information
+#' @export
 getMLAs <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch information on a Member of the Scottish Parliament
+#'
+#' @param id An MSP identifier
+#' @param postcode A postcode, which specifies the constiuency whose MSP is required
+#' @param constituency Name of a constituency
+#' @param always_return whether to try to return an MP even if
+#'                      the seat is vacant or it before an election
+#'
+#' @return A list of information about an MSP
+#' @export
 getMSP <- function(id=NULL, postcode=NULL, constituency=NULL,
                    always_return=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch information about Members of the Scottish Parliament
+#'
+#' @param date The date for which the MSPs are required
+#' @param party Restrict MSPs to those in a party
+#' @param search A search string
+#'
+#' @return A list of lists of SP information
+#' @export
 getMSPs <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
+#' Fetch members of a parliamentary committee
+#'
+#' If \code{name} is not specified, all committees and their members are
+#' returned.
+#'
+#' Theyworkforyou notes that "We have no information since the
+#' 2010 general election, and information before may be inaccurate."
+#'
+#' @param name Name of the committee. Partial names will be matched.
+#' @param date Date for which the committee membership is required
+#'
+#' @return A list of committee members, and also committees if \code{name} is
+#'         not specified.
+#' @export
 getCommittee <- function(name=NULL, date=NULL){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
@@ -123,6 +321,20 @@ getCommittee <- function(name=NULL, date=NULL){
 
 ## ------
 
+
+#' Get information about parliamentary debates
+#'
+#' @param type location of the debate. Defaults to the House of Commons
+#' @param date Date on which debates are required
+#' @param search A search string
+#' @param person A person identifier to specify which speaker's contributions are required
+#' @param gid A speech/debate identifier to restrict to a particular debate
+#' @param order whether to order results by date or relevance. Defaults to date
+#' @param page which page of results to provide. Defaults to first page
+#' @param num Number of results to return
+#'
+#' @return A complex list of debate information
+#' @export
 getDebates <- function(type=c("commons", "westminsterhall", "lords",
                              "scotland", "northernireland"),
                       date=NULL, search=NULL, person=NULL,
@@ -133,6 +345,18 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
   do.call("call_api", params)
 }
 
+#' Get written answers to questions
+#'
+#' @param date Date for which answers are required
+#' @param search A search string
+#' @param person A person identifier to specify who provided the answers
+#' @param gid A written question and answer identifier to return
+#' @param order whether to order results by date or relevance. Defaults to date
+#' @param page which page of results to provide. Defaults to first page
+#' @param num Number of results to return
+#'
+#' @return A list of written answers information
+#' @export
 getWrans <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
@@ -140,6 +364,18 @@ getWrans <- function(date=NULL, search=NULL, person=NULL,
   do.call("call_api", params)
 }
 
+#' Fetch written ministerial responses
+#'
+#' @param date Date for which responses are required
+#' @param search A search string
+#' @param person A person identifier to specify which minister provided the answers
+#' @param gid A reponse identifier to return
+#' @param order whether to order results by date or relevance. Defaults to date
+#' @param page which page of results to provide. Defaults to first page
+#' @param num Number of results to return
+#'
+#' @return A list of information about written ministerial responses
+#' @export
 getWMS <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
@@ -147,6 +383,16 @@ getWMS <- function(date=NULL, search=NULL, person=NULL,
   do.call("call_api", params)
 }
 
+#' Search Hansard
+#'
+#' @param search A search string
+#' @param person A person identifier
+#' @param order whether to order results by date or relevance. Defaults to date
+#' @param page which page of results to provide. Defaults to first page
+#' @param num Number of results to return
+#'
+#' @return A list of search results
+#' @export
 getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
                        page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
@@ -156,6 +402,18 @@ getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
 
 ## ------
 
+
+#' Fetch comments left on TheyWorkForYou
+#'
+#' @param start_date Beginning date
+#' @param end_date End date
+#' @param search A search string
+#' @param pid A person identifier
+#' @param page which page of results to provide. Defaults to first page
+#' @param num Number of results to return
+#'
+#' @return A list of user comments
+#' @export
 getComments <- function(start_date=NULL, end_date=NULL, search=NULL,
                         pid=NULL, page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
