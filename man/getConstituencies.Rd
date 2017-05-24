@@ -18,4 +18,3 @@ a list of elements each of which has a \code{name},
 \description{
 Fetch UK parliament constituency names
 }
-

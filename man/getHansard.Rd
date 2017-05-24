@@ -24,4 +24,3 @@ A list of search results
 \description{
 Search Hansard
 }
-

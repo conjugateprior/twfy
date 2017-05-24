@@ -15,4 +15,3 @@ A list of information about a person
 \description{
 Fetch information about a person
 }
-

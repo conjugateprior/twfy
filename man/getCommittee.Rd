@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getCommittee}
 \alias{getCommittee}
-\title{Fetch members of a parliamentary committee}
+\title{Fetch members of a parliamentary select committee}
 \usage{
 getCommittee(name = NULL, date = NULL)
 }
@@ -20,7 +20,6 @@ If \code{name} is not specified, all committees and their members are
 returned.
 }
 \details{
-Theyworkforyou notes that "We have no information since the
+TheyWorkForYou notes that "We have no information since the
 2010 general election, and information before may be inaccurate."
 }
-

@@ -99,9 +99,17 @@ getConstituencies <- function(date=NULL, search=NULL){
 
 #' Return geometry information for a constituency
 #'
+#' From TheyWorkForYou: "This currently includes, for Great Britain,
+#' the latitude and longitude of the centre point of the bounding box
+#' of the constituency, its area in square metres, the bounding box itself
+#' and the number of parts in the polygon that makes up the constituency.
+#' For Northern Ireland, as we don't have any better data, it only returns
+#' an approximate (estimated by eye) latitude and longitude for the
+#' constituency's centroid.
+#'
 #' Returns a list with elements \itemize{
-#'  \item{\code{parts}}{}
-#'  \item{\code{area}}{}
+#'  \item{\code{parts}}{number of connected parts of the constituency}
+#'  \item{\code{area}}{area in square meters}
 #'  \item{\code{srid_n}}{}
 #'  \item{\code{min_e}}{}
 #'  \item{\code{centre_e}}{}
@@ -109,12 +117,12 @@ getConstituencies <- function(date=NULL, search=NULL){
 #'  \item{\code{min_n}}{}
 #'  \item{\code{centre_n}}{}
 #'  \item{\code{max_n}}{}
-#'  \item{\code{min_lat}}{}
-#'  \item{\code{centre_lat}}{}
-#'  \item{\code{max_lat}}{}
-#'  \item{\code{min_long}}{}
-#'  \item{\code{centre_long}}{}
-#'  \item{\code{max_long}}{}
+#'  \item{\code{min_lat}}{minimum latitude in the constituency}
+#'  \item{\code{centre_lat}}{latitude of the central point of the constituency}
+#'  \item{\code{max_lat}}{maximum latitude in the constituency}
+#'  \item{\code{min_long}}{minimum longitude in the constituency}
+#'  \item{\code{centre_long}}{longitude of the central point of the constituency}
+#'  \item{\code{max_long}}{maximum longitude in the constituency}
 #' }
 #'
 #' @param name Name of constituency
@@ -300,12 +308,12 @@ getMSPs <- function(date=NULL, party=NULL, search=NULL){
   do.call("call_api", params)
 }
 
-#' Fetch members of a parliamentary committee
+#' Fetch members of a parliamentary select committee
 #'
 #' If \code{name} is not specified, all committees and their members are
 #' returned.
 #'
-#' Theyworkforyou notes that "We have no information since the
+#' TheyWorkForYou notes that "We have no information since the
 #' 2010 general election, and information before may be inaccurate."
 #'
 #' @param name Name of the committee. Partial names will be matched.
@@ -340,8 +348,8 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
                       date=NULL, search=NULL, person=NULL,
                       gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
-  params$type <- match.call(type)
-  params$order <- match.call(order)
+  params$type <- match.arg(type)
+  params$order <- match.arg(order)
   do.call("call_api", params)
 }
 
@@ -360,7 +368,7 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
 getWrans <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
-  params$order <- match.call(order)
+  params$order <- match.arg(order)
   do.call("call_api", params)
 }
 
@@ -379,7 +387,7 @@ getWrans <- function(date=NULL, search=NULL, person=NULL,
 getWMS <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
-  params$order <- match.call(order)
+  params$order <- match.arg(order)
   do.call("call_api", params)
 }
 
@@ -396,7 +404,7 @@ getWMS <- function(date=NULL, search=NULL, person=NULL,
 getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
                        page=NULL, num=NULL){
   params <- mkquery(as.list(match.call()))
-  params$order <- match.call(order)
+  params$order <- match.arg(order)
   do.call("call_api", params)
 }
 

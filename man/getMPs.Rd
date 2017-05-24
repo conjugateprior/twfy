@@ -21,4 +21,3 @@ Note that this will be the list as of today's date.  Before a general
 election, there are technically no MPs so the list will be empty.
 If this is not what you are expected, specify an earlier date.
 }
-

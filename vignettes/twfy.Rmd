@@ -1,0 +1,68 @@
+---
+title: "Using twfy to access TheyWorkForYou"
+author: "Will Lowe"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+Let's take a look at Keighley
+```{r}
+library(twfy)
+
+keighley <- getConstituency("Keighley")
+names(keighley)
+keighley_geo <- getGeometry("Keighley")
+names(keighley_geo)
+```
+
+Who was the MP before the 2017 election?
+```{r}
+kh <- getMP(postcode="BD21 2DH", always_return=TRUE)
+kh$full_name
+```
+He's a Conservative 
+```{r}
+kh$party
+```
+in the House of Commons
+```{r}
+kh$house
+```
+We can find him with two identifiers, the identifier for his current term in office
+```{r}
+kh$member_id
+```
+but more lastingly by his person id
+```{r}
+kh$person_id
+```
+With his person_id in hand we can get the details of both his spells in the House like this
+```{r}
+kwper <- getPerson(kh$person_id)
+length(kwper)
+names(kh)
+all(names(kwper[[1]]) == names(kh))
+```
+Now, what's he been talking about in the House?
+```{r}
+kh_talk<- getDebates(person="24923")
+names(kh_talk)
+names(kh_talk$info) # what we've got to work with
+kh_talk$info$total_results 
+```
+Let's take a look at the first speech returned
+```{r}
+speech <- kh_talk$rows[[1]]
+names(speech)
+speech$gid # the event identifier
+speech$parent # what was talked about
+speech$extract # a snippet. Full version is in $body
+```
+
+
+

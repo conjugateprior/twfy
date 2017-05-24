@@ -15,4 +15,3 @@ List of a Lord's periods in the upper house.
 \description{
 Fetch information for a Lord
 }
-

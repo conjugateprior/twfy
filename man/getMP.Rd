@@ -23,4 +23,3 @@ A list of information about an MP
 \description{
 Fetch information about an MP
 }
-

@@ -13,9 +13,18 @@ getGeometry(name)
 A list with constituency \code{name} and geometry information (see Details)
 }
 \description{
+From TheyWorkForYou: "This currently includes, for Great Britain,
+the latitude and longitude of the centre point of the bounding box
+of the constituency, its area in square metres, the bounding box itself
+and the number of parts in the polygon that makes up the constituency.
+For Northern Ireland, as we don't have any better data, it only returns
+an approximate (estimated by eye) latitude and longitude for the
+constituency's centroid.
+}
+\details{
 Returns a list with elements \itemize{
- \item{\code{parts}}{}
- \item{\code{area}}{}
+ \item{\code{parts}}{number of connected parts of the constituency}
+ \item{\code{area}}{area in square meters}
  \item{\code{srid_n}}{}
  \item{\code{min_e}}{}
  \item{\code{centre_e}}{}
@@ -23,12 +32,11 @@ Returns a list with elements \itemize{
  \item{\code{min_n}}{}
  \item{\code{centre_n}}{}
  \item{\code{max_n}}{}
- \item{\code{min_lat}}{}
- \item{\code{centre_lat}}{}
- \item{\code{max_lat}}{}
- \item{\code{min_long}}{}
- \item{\code{centre_long}}{}
- \item{\code{max_long}}{}
+ \item{\code{min_lat}}{minimum latitude in the constituency}
+ \item{\code{centre_lat}}{latitude of the central point of the constituency}
+ \item{\code{max_lat}}{maximum latitude in the constituency}
+ \item{\code{min_long}}{minimum longitude in the constituency}
+ \item{\code{centre_long}}{longitude of the central point of the constituency}
+ \item{\code{max_long}}{maximum longitude in the constituency}
 }
 }
-

@@ -11,4 +11,7 @@ LazyData: true
 Imports:
     httr,
     rjson
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
