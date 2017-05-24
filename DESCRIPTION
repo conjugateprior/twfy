@@ -2,7 +2,7 @@ Package: twfy
 Title: Drive the API for TheyWorkForYou
 Version: 0.1.0
 Authors@R: person("Will", "Lowe", email = "wlowe@princeton.edu", role = c("aut", "cre"))
-Description: An R interface to the API for theyworkforyou.com.
+Description: An R interface to the API for TheyWorkForYou.
 Depends:
     R (>= 3.0.0)
 License: GPL-3
@@ -10,8 +10,9 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     httr,
-    rjson
-RoxygenNote: 6.0.1
-Suggests: knitr,
+    jsonlite
+RoxygenNote: 5.0.1
+Suggests:
+    knitr,
     rmarkdown
 VignetteBuilder: knitr

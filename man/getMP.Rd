@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMP}
 \alias{getMP}
-\title{Fetch information about an MP}
+\title{Fetch information about an Member of Parliament}
 \usage{
 getMP(id = NULL, postcode = NULL, constituency = NULL,
   always_return = NULL)
@@ -21,5 +21,27 @@ the seat is vacant or it before an election}
 A list of information about an MP
 }
 \description{
-Fetch information about an MP
+Returns a data.frame with rows representing the MP's spells in Parliament
+and columns
+\itemize{
+  \item{\code{member_id} }{Member identifier for each spell in parliament}
+  \item{\code{house} }{1: House of Commons, 2: House of Lords}
+  \item{\code{constituency} }{Constituency represented}
+  \item{\code{party} }{Party}
+  \item{\code{entered_house} }{Date MP entered Parliament}
+  \item{\code{left_house} }{Date MP left Parliament}
+  \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+  \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+  \item{\code{title} }{Title, if any}
+  \item{\code{given_name} }{First name}
+  \item{\code{family_name} }{Family name}
+  \item{\code{full_name} }{First name and family name}
+  \item{\code{url} }{URL path relative to TheyWorkForYou's hostname}
+  \item{\code{image} }{URL path to jpg relative to TheyWorkForYou's hostname}
+  \item{\code{image_height} }{Image height in pixels}
+  \item{\code{image_width} }{Image width in pixels}
 }
+}
+

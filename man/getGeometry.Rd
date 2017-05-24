@@ -23,20 +23,21 @@ constituency's centroid.
 }
 \details{
 Returns a list with elements \itemize{
- \item{\code{parts}}{number of connected parts of the constituency}
- \item{\code{area}}{area in square meters}
- \item{\code{srid_n}}{}
- \item{\code{min_e}}{}
- \item{\code{centre_e}}{}
- \item{\code{max_e}}{}
- \item{\code{min_n}}{}
- \item{\code{centre_n}}{}
- \item{\code{max_n}}{}
- \item{\code{min_lat}}{minimum latitude in the constituency}
- \item{\code{centre_lat}}{latitude of the central point of the constituency}
- \item{\code{max_lat}}{maximum latitude in the constituency}
- \item{\code{min_long}}{minimum longitude in the constituency}
- \item{\code{centre_long}}{longitude of the central point of the constituency}
- \item{\code{max_long}}{maximum longitude in the constituency}
+ \item{\code{parts} }{number of connected parts of the constituency}
+ \item{\code{area} }{area in square meters}
+ \item{\code{srid_n} }{}
+ \item{\code{min_e} }{}
+ \item{\code{centre_e} }{}
+ \item{\code{max_e} }{}
+ \item{\code{min_n} }{}
+ \item{\code{centre_n} }{}
+ \item{\code{max_n} }{}
+ \item{\code{min_lat} }{minimum latitude in the constituency}
+ \item{\code{centre_lat} }{latitude of the central point of the constituency}
+ \item{\code{max_lat} }{maximum latitude in the constituency}
+ \item{\code{min_long} }{minimum longitude in the constituency}
+ \item{\code{centre_long} }{longitude of the central point of the constituency}
+ \item{\code{max_long} }{maximum longitude in the constituency}
 }
 }
+

@@ -7,14 +7,15 @@
 getConstituencies(date = NULL, search = NULL)
 }
 \arguments{
-\item{date}{Constituencies names as of this date}
+\item{date}{Date for which constituency names are required}
 
 \item{search}{Search string}
 }
 \value{
-a list of elements each of which has a \code{name},
-        or, if simplified, a character vector of constituency names.
+a data.frame with single column \code{name} containing
+        constituency names
 }
 \description{
 Fetch UK parliament constituency names
 }
+

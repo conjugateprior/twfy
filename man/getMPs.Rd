@@ -17,7 +17,25 @@ getMPs(date = NULL, party = NULL, search = NULL)
 A list of MPs or none if parliament is not in session.
 }
 \description{
-Note that this will be the list as of today's date.  Before a general
-election, there are technically no MPs so the list will be empty.
-If this is not what you are expected, specify an earlier date.
+Assuming it is not near an election, a data.frame with columns
 }
+\details{
+\itemize{
+ \item{\code{member_id} }{Member identifier}
+ \item{\code{person_id} }{Person identifier}
+ \item{\code{name} }{MP's first names then family name}
+ \item{\code{party} }{Party}
+ \item{\code{constituency} }{Consituency represented}
+ \item{\code{office} }{NULL if no offices held, or a list with one
+    element: a data.frame with column headings:
+    \itemize{
+      \item{\code{dept} }{The committee or commission name}
+      \item{\code{position} }{Role, e.g. Member},
+      \item{\code{from_date} }{Date tenure in office began}
+      \item{\code{to_date} }{Date tenure in office ended, or
+                            \code{9999-12-31} if still in office}
+    }
+  }
+}
+}
+

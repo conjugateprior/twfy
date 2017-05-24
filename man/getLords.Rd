@@ -7,15 +7,13 @@
 getLords(date = NULL, party = NULL, search = NULL)
 }
 \arguments{
-\item{date}{iso date, e.g. "1990-01-02", to compile the list for}
+\item{date}{iso-style date, e.g. "1990-01-02", to compile a list of Lords for}
 
 \item{party}{Include only Lords from this party}
 
 \item{search}{A search term}
 }
 \value{
-A List of Lords
+A data.frame of information about Lords
 }
-\description{
-Fetch a list of Lords
-}
+
