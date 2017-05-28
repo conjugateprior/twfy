@@ -31,4 +31,3 @@ A complex list of debate information
 \description{
 Get information about parliamentary debates
 }
-

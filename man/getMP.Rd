@@ -44,4 +44,3 @@ and columns
   \item{\code{image_width} }{Image width in pixels}
 }
 }
-

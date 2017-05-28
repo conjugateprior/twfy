@@ -40,4 +40,3 @@ Returns a list with elements \itemize{
  \item{\code{max_long} }{maximum longitude in the constituency}
 }
 }
-

@@ -28,4 +28,3 @@ A list of information about written ministerial responses
 \description{
 Fetch written ministerial responses
 }
-

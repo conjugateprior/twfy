@@ -38,4 +38,3 @@ Assuming it is not near an election, a data.frame with columns
   }
 }
 }
-

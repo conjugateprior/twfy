@@ -34,4 +34,3 @@ Returns a data.frame with columns
  \item{\code{full_name} }{First names then family name}
 }
 }
-

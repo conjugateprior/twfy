@@ -23,4 +23,3 @@ A list of information about an MLA
 \description{
 Fetch a member of the London Assembly
 }
-
