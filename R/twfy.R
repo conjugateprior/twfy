@@ -46,8 +46,8 @@ call_api <- function(verb, ...){
   q$output <- "js"
   q$key <- get_api_key()
 
-  twfy_access_point <- "https://www.theyworkforyou.com/api/"
-  resp <- httr::GET(paste0(twfy_access_point, verb), query=q)
+  twfy_url <- "https://www.theyworkforyou.com/api/"
+  resp <- httr::GET(paste0(twfy_url, verb), query=q)
   robj <- jsonlite::fromJSON(httr::content(resp))
   if ("error" %in% names(robj))
     stop(robj$error)
