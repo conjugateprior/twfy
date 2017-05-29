@@ -27,6 +27,17 @@ get_api_key <- function(){
   key
 }
 
+
+#' Call the API directly
+#'
+#' All the other functions call this one. (It's exported only
+#' for debugging purposes).  Use them instead.
+#'
+#' @param verb function name e.g. 'getConstituencies'
+#' @param ... often optional named arguments
+#'
+#' @return the response content, unserialized by jsonlite
+#' @export
 call_api <- function(verb, ...){
   q <- list(...)
   if (length(q) > 0)
