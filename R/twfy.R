@@ -33,12 +33,18 @@ get_api_key <- function(){
 #' All the other functions call this one. (It's exported only
 #' for debugging purposes).  Use them instead.
 #'
-#' @param verb function name e.g. 'getConstituencies'
+#' If you're \textit{really} curious about implementation, read on.
+#' Each API function introspects to see what its function name
+#' is, bundles up its named arguments, and calls this function with them.
+#' Consequently, aside from a bit of argument checking and/or return value
+#' massaging, every function is implemented exactly the same way.
+#'
+#' @param endpoint function name e.g. 'getConstituencies'
 #' @param ... often optional named arguments
 #'
-#' @return the response content, unserialized by jsonlite
+#' @return the response content, as unserialized by \code{jsonlite::fromJSON}
 #' @export
-call_api <- function(verb, ...){
+call_api <- function(endpoint, ...){
   q <- list(...)
   if (length(q) > 0)
     q <- q[sapply(q, function(x) !is.null(x))] # remove NULL values
@@ -47,7 +53,7 @@ call_api <- function(verb, ...){
   q$key <- get_api_key()
 
   twfy_url <- "https://www.theyworkforyou.com/api/"
-  resp <- httr::GET(paste0(twfy_url, verb), query=q)
+  resp <- httr::GET(paste0(twfy_url, endpoint), query=q)
   robj <- jsonlite::fromJSON(httr::content(resp))
   if ("error" %in% names(robj))
     stop(robj$error)
@@ -56,11 +62,9 @@ call_api <- function(verb, ...){
 
 params_from_call <- function(mcall){
   lst <- as.list(mcall)
-  lst$verb <- deparse(lst[[1]]) # add verb to list
+  lst$endpoint <- deparse(lst[[1]]) # add endpoint to list
   lst[2:length(lst)] # remove specious unnamed first element
 }
-
-## ------
 
 #' Convert URL
 #'
