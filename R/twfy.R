@@ -33,7 +33,7 @@ get_api_key <- function(){
 #' All the other functions call this one. (It's exported only
 #' for debugging purposes).  Use them instead.
 #'
-#' If you're \textit{really} curious about implementation, read on.
+#' If you're really curious about implementation, read on.
 #' Each API function introspects to see what its function name
 #' is, bundles up its named arguments, and calls this function with them.
 #' Consequently, aside from a bit of argument checking and/or return value
@@ -54,8 +54,12 @@ call_api <- function(endpoint, ...){
 
   twfy_url <- "https://www.theyworkforyou.com/api/"
   resp <- httr::GET(paste0(twfy_url, endpoint), query=q)
+  if (http_type(resp) != "application/json")
+    stop("API did not return json", call. = FALSE) # did the API change?
+
   robj <- jsonlite::fromJSON(httr::content(resp))
-  if ("error" %in% names(robj))
+  # API errors return 200 but provide a field in the json
+  if ("error" %in% names(robj)) #
     stop(robj$error)
   robj
 }
