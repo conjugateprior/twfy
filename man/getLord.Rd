@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getLord}
 \alias{getLord}
-\title{Fetch information for a Lord}
+\title{Get information about a Lord}
 \usage{
 getLord(id)
 }
@@ -10,27 +10,28 @@ getLord(id)
 \item{id}{Person identifier}
 }
 \value{
-List of a Lord's periods in the upper house.
+a data.frame with columns
+\itemize{
+  \item{\code{member_id} }{Member identifier}
+  \item{\code{house} }{Which chamber 1: The House of Commons,
+                      2: The House of Lords.}
+  \item{\code{constituency} }{Consituency represented}
+  \item{\code{party} }{Party}
+  \item{\code{entered_house} }{Date when entered the House of Lords}
+  \item{\code{left_house} }{Date when left the House of Lords or
+                             \code{9999-12-31} if still in office}
+  \item{\code{entered_reason} }{Why they entered}
+  \item{\code{left_reason} }{Why they left}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{lastupdate} }{Date TheyWorkForYou updated this information}
+  \item{\code{title} }{Title, e.g. 'Baroness'}
+  \item{\code{given_name} }{First names}
+  \item{\code{family_name} }{Family name}
+  \item{\code{lordofname} }{Location associated with title}
+  \item{\code{full_name} }{First names then family name}
+}
 }
 \description{
-Returns a data.frame with columns
-\itemize{
- \item{\code{member_id} }{Member identifier}
- \item{\code{house} }{Which chamber 1: The House of Commons,
-                     2: The House of Lords.}
- \item{\code{constituency} }{Consituency represented}
- \item{\code{party} }{Party}
- \item{\code{entered_house} }{Date when entered the House of Lords}
- \item{\code{left_house} }{Date when left the House of Lords or
-                            \code{9999-12-31} if still in office}
- \item{\code{entered_reason} }{Why they entered}
- \item{\code{left_reason} }{Why they left}
- \item{\code{person_id} }{Person identifier}
- \item{\code{lastupdate} }{Date TheyWorkForYou updated this information}
- \item{\code{title} }{Title, e.g. 'Baroness'}
- \item{\code{given_name} }{First names}
- \item{\code{family_name} }{Family name}
- \item{\code{lordofname} }{Location associated with title}
- \item{\code{full_name} }{First names then family name}
+Get information about a Lord
 }
-}
+

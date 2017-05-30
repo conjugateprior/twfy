@@ -21,3 +21,4 @@ To temporarily override the key being used, change the environment variable
 \code{TWFY_API_KEY} with \code{Sys.setenv}.  To make the change permanent,
 edit the relevant line in \code{~/.Renviron}.
 }
+

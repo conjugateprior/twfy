@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getConstituency}
 \alias{getConstituency}
-\title{Fetch a UK Parliament constituency}
+\title{Get information for a constituency}
 \usage{
 getConstituency(name = NULL, postcode = NULL)
 }
@@ -14,8 +14,17 @@ getConstituency(name = NULL, postcode = NULL)
 One of \code{name} or \code{postcode} is required.}
 }
 \value{
-A list with elements including constituency \code{name}, and identifiers
+A data.frame with columns
+       \itemize{
+         \item{\code{name}}{Constituency name}
+         \item{\code{pa_id}}{Constituency identifier}
+         \item{\code{bbc_constituency_id}}{BBC numeric identifier}
+         \item{\code{guardian_election_results}}{URL for election results}
+         \item{\code{guardian_id}}{Guardian numeric identifier}
+         \item{\code{guardian_name}}{Guardian name identifier}
+       }
 }
 \description{
-Fetch a UK Parliament constituency
+Get information for a constituency
 }
+

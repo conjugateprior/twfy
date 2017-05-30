@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMP}
 \alias{getMP}
-\title{Fetch information about an Member of Parliament}
+\title{Get information about a Member of Parliament}
 \usage{
 getMP(id = NULL, postcode = NULL, constituency = NULL,
   always_return = NULL)
@@ -18,12 +18,8 @@ getMP(id = NULL, postcode = NULL, constituency = NULL,
 the seat is vacant or it before an election}
 }
 \value{
-A list of information about an MP
-}
-\description{
-Returns a data.frame with rows representing the MP's spells in Parliament
-and columns
-\itemize{
+a data.frame with rows representing the MP's spells in Parliament
+and columns \itemize{
   \item{\code{member_id} }{Member identifier for each spell in parliament}
   \item{\code{house} }{1: House of Commons, 2: House of Lords}
   \item{\code{constituency} }{Constituency represented}
@@ -44,3 +40,7 @@ and columns
   \item{\code{image_width} }{Image width in pixels}
 }
 }
+\description{
+Returns
+}
+

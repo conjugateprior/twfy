@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMPs}
 \alias{getMPs}
-\title{Fetch Members of Parliament}
+\title{Get information about Members of Parliament}
 \usage{
 getMPs(date = NULL, party = NULL, search = NULL)
 }
@@ -14,13 +14,7 @@ getMPs(date = NULL, party = NULL, search = NULL)
 \item{search}{A search string}
 }
 \value{
-A list of MPs or none if parliament is not in session.
-}
-\description{
-Assuming it is not near an election, a data.frame with columns
-}
-\details{
-\itemize{
+a data.frame with columns \itemize{
  \item{\code{member_id} }{Member identifier}
  \item{\code{person_id} }{Person identifier}
  \item{\code{name} }{MP's first names then family name}
@@ -36,5 +30,9 @@ Assuming it is not near an election, a data.frame with columns
                             \code{9999-12-31} if still in office}
     }
   }
+} or an empty list if parliament is dissolved.
 }
+\description{
+Get information about Members of Parliament
 }
+

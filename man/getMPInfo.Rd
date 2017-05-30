@@ -12,9 +12,13 @@ getMPInfo(id, fields = NULL)
 \item{fields}{A comma separated character vector of field names}
 }
 \value{
-A list of information about an MP
+a list
 }
 \description{
-Unless you want all the hundred or so fields available about an MP you should
+Unless you want all the four hundred or so fields available about an MP you should
 probably specify the ones you want in a comma-separated string to \code{fields}.
 }
+\details{
+Note that unlike other functions in this package the result is a list
+}
+

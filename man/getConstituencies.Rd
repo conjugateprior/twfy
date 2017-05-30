@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getConstituencies}
 \alias{getConstituencies}
-\title{Fetch UK parliament constituency names}
+\title{Get constituency names}
 \usage{
 getConstituencies(date = NULL, search = NULL)
 }
@@ -16,5 +16,6 @@ a data.frame with single column \code{name} containing
         constituency names
 }
 \description{
-Fetch UK parliament constituency names
+Get constituency names
 }
+

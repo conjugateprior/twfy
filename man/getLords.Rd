@@ -2,17 +2,37 @@
 % Please edit documentation in R/twfy.R
 \name{getLords}
 \alias{getLords}
-\title{Fetch a list of Lords}
+\title{Get information about Lords}
 \usage{
 getLords(date = NULL, party = NULL, search = NULL)
 }
 \arguments{
-\item{date}{iso-style date, e.g. "1990-01-02", to compile a list of Lords for}
+\item{date}{ISO-style date, e.g. "1990-01-02", to compile a list of Lords for}
 
-\item{party}{Include only Lords from this party}
+\item{party}{Restrict list to Lords in this party}
 
 \item{search}{A search term}
 }
 \value{
-A data.frame of information about Lords
+A data.frame with columns
+\itemize{
+  \item{\code{member_id} }{Member identifier, dependent on position}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{name} }{Name of Lord}
+  \item{\code{party} }{Party}
+  \item{\code{office} }{NULL if no offices held, or a list with one
+    element: a data.frame with column headings:
+    \itemize{
+      \item{\code{dept} }{The committee or commission name}
+      \item{\code{position} }{Job role, e.g. Member or Leader},
+      \item{\code{from_date} }{Date tenure in office began}
+      \item{\code{to_date} }{Date tenure in office ended, or
+                            \code{9999-12-31} if still in office}
+    }
+  }
 }
+}
+\description{
+Get information about Lords
+}
+
