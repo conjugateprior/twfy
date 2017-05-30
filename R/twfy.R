@@ -67,14 +67,22 @@ convertURL <- function(url){
 
 ## ------
 
-#' Fetch a UK Parliament constituency
+#' Get information for a constituency
 #'
 #' @param name Name of constituency
 #' @param postcode A postcode
 #'
 #' One of \code{name} or \code{postcode} is required.
 #'
-#' @return A list with elements including constituency \code{name}, and identifiers
+#' @return A data.frame with columns
+#'        \itemize{
+#'          \item{\code{name}}{Constituency name}
+#'          \item{\code{pa_id}}{Constituency identifier}
+#'          \item{\code{bbc_constituency_id}}{BBC numeric identifier}
+#'          \item{\code{guardian_election_results}}{URL for election results}
+#'          \item{\code{guardian_id}}{Guardian numeric identifier}
+#'          \item{\code{guardian_name}}{Guardian name identifier}
+#'        }
 #' @export
 getConstituency <- function(name=NULL, postcode=NULL){
   params <- mkquery(as.list(match.call()))
@@ -82,7 +90,7 @@ getConstituency <- function(name=NULL, postcode=NULL){
   data.frame(res, stringsAsFactors = FALSE) # flatten to df
 }
 
-#' Fetch UK parliament constituency names
+#' Get constituency names
 #'
 #' @param date Date for which constituency names are required
 #' @param search Search string
@@ -105,11 +113,20 @@ getConstituencies <- function(date=NULL, search=NULL){
 #' and the number of parts in the polygon that makes up the constituency.
 #' For Northern Ireland, as we don't have any better data, it only returns
 #' an approximate (estimated by eye) latitude and longitude for the
-#' constituency's centroid.
+#' constituency's centroid."
 #'
-#' Returns a list with elements \itemize{
+#'
+#' @param name Name of constituency
+#'
+#' @return A data.frame with columns \itemize{
 #'  \item{\code{parts} }{number of connected parts of the constituency}
 #'  \item{\code{area} }{area in square meters}
+#'  \item{\code{min_lat} }{minimum latitude in the constituency}
+#'  \item{\code{centre_lat} }{latitude of the central point of the constituency}
+#'  \item{\code{max_lat} }{maximum latitude in the constituency}
+#'  \item{\code{min_long} }{minimum longitude in the constituency}
+#'  \item{\code{centre_long} }{longitude of the central point of the constituency}
+#'  \item{\code{max_long} }{maximum longitude in the constituency}
 #'  \item{\code{srid_n} }{}
 #'  \item{\code{min_e} }{}
 #'  \item{\code{centre_e} }{}
@@ -117,17 +134,7 @@ getConstituencies <- function(date=NULL, search=NULL){
 #'  \item{\code{min_n} }{}
 #'  \item{\code{centre_n} }{}
 #'  \item{\code{max_n} }{}
-#'  \item{\code{min_lat} }{minimum latitude in the constituency}
-#'  \item{\code{centre_lat} }{latitude of the central point of the constituency}
-#'  \item{\code{max_lat} }{maximum latitude in the constituency}
-#'  \item{\code{min_long} }{minimum longitude in the constituency}
-#'  \item{\code{centre_long} }{longitude of the central point of the constituency}
-#'  \item{\code{max_long} }{maximum longitude in the constituency}
 #' }
-#'
-#' @param name Name of constituency
-#'
-#' @return A list with constituency \code{name} and geometry information (see Details)
 #' @export
 getGeometry <- function(name){
   params <- mkquery(as.list(match.call()))
@@ -150,15 +157,19 @@ getBoundary <- function(name){
 ## ------
 
 
-#' Fetch a list of Lords
+#' Get information about Lords
 #'
-#' Returns a data.frame with columns
+#' @param date ISO-style date, e.g. "1990-01-02", to compile a list of Lords for
+#' @param party Restrict list to Lords in this party
+#' @param search A search term
+#'
+#' @return A data.frame with columns
 #' \itemize{
-#'  \item{\code{member_id} }{Member identifier, dependent on position}
-#'  \item{\code{person_id} }{Person identifier}
-#'  \item{\code{name} }{Name of Lord}
-#'  \item{\code{party} }{Party}
-#'  \item{\code{office} }{NULL if no offices held, or a list with one
+#'   \item{\code{member_id} }{Member identifier, dependent on position}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{name} }{Name of Lord}
+#'   \item{\code{party} }{Party}
+#'   \item{\code{office} }{NULL if no offices held, or a list with one
 #'     element: a data.frame with column headings:
 #'     \itemize{
 #'       \item{\code{dept} }{The committee or commission name}
@@ -167,14 +178,8 @@ getBoundary <- function(name){
 #'       \item{\code{to_date} }{Date tenure in office ended, or
 #'                             \code{9999-12-31} if still in office}
 #'     }
-#'  }
-#'
-#'
-#' @param date iso-style date, e.g. "1990-01-02", to compile a list of Lords for
-#' @param party Include only Lords from this party
-#' @param search A search term
-#'
-#' @return A data.frame of information about Lords
+#'   }
+#' }
 #' @export
 getLords <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
@@ -182,43 +187,43 @@ getLords <- function(date=NULL, party=NULL, search=NULL){
 }
 
 
-#' Fetch information for a Lord
-#'
-#' Returns a data.frame with columns
-#' \itemize{
-#'  \item{\code{member_id} }{Member identifier}
-#'  \item{\code{house} }{Which chamber 1: The House of Commons,
-#'                      2: The House of Lords.}
-#'  \item{\code{constituency} }{Consituency represented}
-#'  \item{\code{party} }{Party}
-#'  \item{\code{entered_house} }{Date when entered the House of Lords}
-#'  \item{\code{left_house} }{Date when left the House of Lords or
-#'                             \code{9999-12-31} if still in office}
-#'  \item{\code{entered_reason} }{Why they entered}
-#'  \item{\code{left_reason} }{Why they left}
-#'  \item{\code{person_id} }{Person identifier}
-#'  \item{\code{lastupdate} }{Date TheyWorkForYou updated this information}
-#'  \item{\code{title} }{Title, e.g. 'Baroness'}
-#'  \item{\code{given_name} }{First names}
-#'  \item{\code{family_name} }{Family name}
-#'  \item{\code{lordofname} }{Location associated with title}
-#'  \item{\code{full_name} }{First names then family name}
-#' }
+#' Get information about a Lord
 #'
 #' @param id Person identifier
 #'
-#' @return List of a Lord's periods in the upper house.
+#' @return a data.frame with columns
+#' \itemize{
+#'   \item{\code{member_id} }{Member identifier}
+#'   \item{\code{house} }{Which chamber 1: The House of Commons,
+#'                       2: The House of Lords.}
+#'   \item{\code{constituency} }{Consituency represented}
+#'   \item{\code{party} }{Party}
+#'   \item{\code{entered_house} }{Date when entered the House of Lords}
+#'   \item{\code{left_house} }{Date when left the House of Lords or
+#'                              \code{9999-12-31} if still in office}
+#'   \item{\code{entered_reason} }{Why they entered}
+#'   \item{\code{left_reason} }{Why they left}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{lastupdate} }{Date TheyWorkForYou updated this information}
+#'   \item{\code{title} }{Title, e.g. 'Baroness'}
+#'   \item{\code{given_name} }{First names}
+#'   \item{\code{family_name} }{Family name}
+#'   \item{\code{lordofname} }{Location associated with title}
+#'   \item{\code{full_name} }{First names then family name}
+#' }
 #' @export
 getLord <- function(id){
   params <- mkquery(as.list(match.call()))
   do.call("call_api", params)
 }
 
-#' Fetch Members of Parliament
+#' Get information about Members of Parliament
 #'
-#' Assuming it is not near an election, a data.frame with columns
+#' @param date Date for which the MP list is constructed
+#' @param party Restrict to MPs in this party
+#' @param search A search string
 #'
-#' \itemize{
+#' @return a data.frame with columns \itemize{
 #'  \item{\code{member_id} }{Member identifier}
 #'  \item{\code{person_id} }{Person identifier}
 #'  \item{\code{name} }{MP's first names then family name}
@@ -234,13 +239,7 @@ getLord <- function(id){
 #'                             \code{9999-12-31} if still in office}
 #'     }
 #'   }
-#' }
-#'
-#' @param date Date for which the MP list is constructed
-#' @param party Restrict to MPs in this party
-#' @param search A search string
-#'
-#' @return A list of MPs or none if parliament is not in session.
+#' } or an empty list if parliament is dissolved.
 #' @export
 getMPs <- function(date=NULL, party=NULL, search=NULL){
   params <- mkquery(as.list(match.call()))
@@ -250,11 +249,17 @@ getMPs <- function(date=NULL, party=NULL, search=NULL){
   mps
 }
 
-#' Fetch information about an Member of Parliament
+#' Get information about a Member of Parliament
 #'
-#' Returns a data.frame with rows representing the MP's spells in Parliament
-#' and columns
-#' \itemize{
+#' Returns
+#' @param id An MP identifier
+#' @param postcode A postcode, used to identify a constituency and thereby an MP
+#' @param constituency Name of a constituency
+#' @param always_return whether to try to return an MP even if
+#'                      the seat is vacant or it before an election
+#'
+#' @return a data.frame with rows representing the MP's spells in Parliament
+#' and columns \itemize{
 #'   \item{\code{member_id} }{Member identifier for each spell in parliament}
 #'   \item{\code{house} }{1: House of Commons, 2: House of Lords}
 #'   \item{\code{constituency} }{Constituency represented}
@@ -275,13 +280,6 @@ getMPs <- function(date=NULL, party=NULL, search=NULL){
 #'   \item{\code{image_width} }{Image width in pixels}
 #' }
 #'
-#' @param id An MP identifier
-#' @param postcode A postcode, used to identify a constituency and thereby an MP
-#' @param constituency Name of a constituency
-#' @param always_return whether to try to return an MP even if
-#'                      the seat is vacant or it before an election
-#'
-#' @return A list of information about an MP
 #' @export
 getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
                   always_return=NULL){
@@ -289,18 +287,18 @@ getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
   do.call("call_api", params)
 }
 
-# fields should be comma separated values
-
-
 #' Fetch more information about a Member of Parliament
 #'
-#' Unless you want all the hundred or so fields available about an MP you should
+#' Unless you want all the four hundred or so fields available about an MP you should
 #' probably specify the ones you want in a comma-separated string to \code{fields}.
+#'
+#' Note that unlike other functions in this package the result is a list
+#'
 #'
 #' @param id An MP identifier
 #' @param fields A comma separated character vector of field names
 #'
-#' @return A list of information about an MP
+#' @return a list
 #' @export
 getMPInfo <- function(id, fields=NULL){
   params <- mkquery(as.list(match.call()))
