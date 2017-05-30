@@ -19,4 +19,3 @@ A list with elements including constituency \code{name}, and identifiers
 \description{
 Fetch a UK Parliament constituency
 }
-

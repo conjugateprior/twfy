@@ -28,4 +28,3 @@ A list of written answers information
 \description{
 Get written answers to questions
 }
-

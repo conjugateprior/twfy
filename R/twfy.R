@@ -27,7 +27,24 @@ get_api_key <- function(){
   key
 }
 
-call_api <- function(verb, ...){
+
+#' Call the API directly
+#'
+#' All the other functions call this one. (It's exported only
+#' for debugging purposes).  Use them instead.
+#'
+#' If you're really curious about implementation, read on.
+#' Each API function introspects to see what its function name
+#' is, bundles up its named arguments, and calls this function with them.
+#' Consequently, aside from a bit of argument checking and/or return value
+#' massaging, every function is implemented exactly the same way.
+#'
+#' @param endpoint function name e.g. 'getConstituencies'
+#' @param ... often optional named arguments
+#'
+#' @return the response content, as unserialized by \code{jsonlite::fromJSON}
+#' @export
+call_api <- function(endpoint, ...){
   q <- list(...)
   if (length(q) > 0)
     q <- q[sapply(q, function(x) !is.null(x))] # remove NULL values
@@ -35,20 +52,23 @@ call_api <- function(verb, ...){
   q$output <- "js"
   q$key <- get_api_key()
 
-  twfy_access_point <- "https://www.theyworkforyou.com/api/"
-  resp <- httr::GET(paste0(twfy_access_point, verb), query=q)
+  twfy_url <- "https://www.theyworkforyou.com/api/"
+  resp <- httr::GET(paste0(twfy_url, endpoint), query=q)
+  if (http_type(resp) != "application/json")
+    stop("API did not return json", call. = FALSE) # did the API change?
+
   robj <- jsonlite::fromJSON(httr::content(resp))
-  if ("error" %in% names(robj))
+  # API errors return 200 but provide a field in the json
+  if ("error" %in% names(robj)) #
     stop(robj$error)
   robj
 }
 
-mkquery <- function(lst){
-  lst$verb <- deparse(lst[[1]]) # add verb to list
+params_from_call <- function(mcall){
+  lst <- as.list(mcall)
+  lst$endpoint <- deparse(lst[[1]]) # add endpoint to list
   lst[2:length(lst)] # remove specious unnamed first element
 }
-
-## ------
 
 #' Convert URL
 #'
@@ -61,7 +81,7 @@ mkquery <- function(lst){
 #' @export
 #'
 convertURL <- function(url){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -85,7 +105,7 @@ convertURL <- function(url){
 #'        }
 #' @export
 getConstituency <- function(name=NULL, postcode=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   res <- do.call("call_api", params)
   data.frame(res, stringsAsFactors = FALSE) # flatten to df
 }
@@ -99,7 +119,7 @@ getConstituency <- function(name=NULL, postcode=NULL){
 #'         constituency names
 #' @export
 getConstituencies <- function(date=NULL, search=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -137,7 +157,7 @@ getConstituencies <- function(date=NULL, search=NULL){
 #' }
 #' @export
 getGeometry <- function(name){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   res <- do.call("call_api", params)
   data.frame(res, stringsAsFactors = FALSE) # flatten to df
 }
@@ -182,7 +202,7 @@ getBoundary <- function(name){
 #' }
 #' @export
 getLords <- function(date=NULL, party=NULL, search=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -213,7 +233,7 @@ getLords <- function(date=NULL, party=NULL, search=NULL){
 #' }
 #' @export
 getLord <- function(id){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -242,7 +262,7 @@ getLord <- function(id){
 #' } or an empty list if parliament is dissolved.
 #' @export
 getMPs <- function(date=NULL, party=NULL, search=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   mps <- do.call("call_api", params)
   if (length(mps) == 0) # Catch a basic naive error around election time
     stop("No results. (Note that there are no MPs when Parliament is dissolved near to elections. If this is the reason, specifying a date may help)")
@@ -283,7 +303,7 @@ getMPs <- function(date=NULL, party=NULL, search=NULL){
 #' @export
 getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
                   always_return=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -301,7 +321,7 @@ getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
 #' @return a list
 #' @export
 getMPInfo <- function(id, fields=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -313,7 +333,7 @@ getMPInfo <- function(id, fields=NULL){
 #' @return A list of list of MP information
 #' @export
 getMPsInfo <- function(ids, fields=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -324,7 +344,7 @@ getMPsInfo <- function(ids, fields=NULL){
 #' @return A list of information about a person
 #' @export
 getPerson <- function(id){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -341,7 +361,7 @@ getPerson <- function(id){
 #' @export
 getMLA <- function(id=NULL,postcode=NULL, constituency=NULL,
                    always_return=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -354,7 +374,7 @@ getMLA <- function(id=NULL,postcode=NULL, constituency=NULL,
 #' @return A list of lists of MLA information
 #' @export
 getMLAs <- function(date=NULL, party=NULL, search=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -370,7 +390,7 @@ getMLAs <- function(date=NULL, party=NULL, search=NULL){
 #' @export
 getMSP <- function(id=NULL, postcode=NULL, constituency=NULL,
                    always_return=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -383,7 +403,7 @@ getMSP <- function(id=NULL, postcode=NULL, constituency=NULL,
 #' @return A list of lists of SP information
 #' @export
 getMSPs <- function(date=NULL, party=NULL, search=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -402,7 +422,7 @@ getMSPs <- function(date=NULL, party=NULL, search=NULL){
 #'         not specified.
 #' @export
 getCommittee <- function(name=NULL, date=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
@@ -426,7 +446,7 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
                              "scotland", "northernireland"),
                       date=NULL, search=NULL, person=NULL,
                       gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   params$type <- match.arg(type)
   params$order <- match.arg(order)
   do.call("call_api", params)
@@ -446,7 +466,7 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
 #' @export
 getWrans <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   params$order <- match.arg(order)
   do.call("call_api", params)
 }
@@ -465,7 +485,7 @@ getWrans <- function(date=NULL, search=NULL, person=NULL,
 #' @export
 getWMS <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   params$order <- match.arg(order)
   do.call("call_api", params)
 }
@@ -482,7 +502,7 @@ getWMS <- function(date=NULL, search=NULL, person=NULL,
 #' @export
 getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
                        page=NULL, num=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   params$order <- match.arg(order)
   do.call("call_api", params)
 }
@@ -503,6 +523,6 @@ getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
 #' @export
 getComments <- function(start_date=NULL, end_date=NULL, search=NULL,
                         pid=NULL, page=NULL, num=NULL){
-  params <- mkquery(as.list(match.call()))
+  params <- params_from_call(match.call())
   do.call("call_api", params)
 }

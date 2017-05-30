@@ -18,4 +18,3 @@ a data.frame with single column \code{name} containing
 \description{
 Fetch UK parliament constituency names
 }
-

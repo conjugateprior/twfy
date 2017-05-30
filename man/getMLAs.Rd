@@ -19,4 +19,3 @@ A list of lists of MLA information
 \description{
 Fetch information about MLAs
 }
-

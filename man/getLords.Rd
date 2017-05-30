@@ -16,4 +16,3 @@ getLords(date = NULL, party = NULL, search = NULL)
 \value{
 A data.frame of information about Lords
 }
-
