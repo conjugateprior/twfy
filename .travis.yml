@@ -3,3 +3,6 @@
 language: R
 sudo: false
 cache: packages
+
+before_install:
+ - echo "TWFY_API_KEY=${TWFY_API_KEY}" > ~/.Renviron
