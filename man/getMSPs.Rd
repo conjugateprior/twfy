@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMSPs}
 \alias{getMSPs}
-\title{Fetch information about Members of the Scottish Parliament}
+\title{Get information about Members of the Scottish Parliament}
 \usage{
 getMSPs(date = NULL, party = NULL, search = NULL)
 }
@@ -14,9 +14,15 @@ getMSPs(date = NULL, party = NULL, search = NULL)
 \item{search}{A search string}
 }
 \value{
-A list of lists of SP information
+A data.frame with columns \itemize{
+  \item{\code{member_id} }{Member identifier for each spell in the Scottish parliament}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{name} }{Full name of MSP}
+  \item{\code{party} }{Party represented}
+  \item{\code{constituency} }{Name of MSP's constituency}
+}
 }
 \description{
-Fetch information about Members of the Scottish Parliament
+Get information about Members of the Scottish Parliament
 }
 

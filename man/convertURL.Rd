@@ -10,10 +10,17 @@ convertURL(url)
 \item{url}{url you want to convert}
 }
 \value{
-A list containing \code{gid} and \code{url}.
+A one row data.frame with columns \code{gid} and \code{url}.
 }
 \description{
 Converts a parliament.uk Hansard URL into a
 TheyWorkForYou one, if possible.
+}
+\examples{
+\dontrun{
+url <- "http://www.publications.parliament.uk/pa/cm201212/cmhansrd/cm120418/debtext/120418-0001.htm#12041847002086"
+res <- convertURL(url)
+names(res) # gid, url
+}
 }
 

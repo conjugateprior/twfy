@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMPsInfo}
 \alias{getMPsInfo}
-\title{Fetch more information about a Member of Parliament}
+\title{Get more information about a Member of Parliament}
 \usage{
 getMPsInfo(ids, fields = NULL)
 }
@@ -15,6 +15,6 @@ getMPsInfo(ids, fields = NULL)
 A list of list of MP information
 }
 \description{
-Fetch more information about a Member of Parliament
+Get more information about a Member of Parliament
 }
 

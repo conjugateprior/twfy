@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getComments}
 \alias{getComments}
-\title{Fetch comments left on TheyWorkForYou}
+\title{Get comments left on TheyWorkForYou}
 \usage{
 getComments(start_date = NULL, end_date = NULL, search = NULL,
   pid = NULL, page = NULL, num = NULL)
@@ -21,9 +21,21 @@ getComments(start_date = NULL, end_date = NULL, search = NULL,
 \item{num}{Number of results to return}
 }
 \value{
-A list of user comments
+A list containing data.frames with columns \itemize{
+  \item{\code{comment_id}}{Comment identifier}
+  \item{\code{user_id}}{User identifier}
+  \item{\code{epobject_id}}{}
+  \item{\code{body}}{Text of comment}
+  \item{\code{posted}}{date and time posted}
+  \item{\code{major}}{}
+  \item{\code{gid}}{}
+  \item{\code{firstname}}{Commenter's first name}
+  \item{\code{lastname}}{Commenter's last name}
+  \item{\code{url}}{URL of the comment}
+  \item{\code{useurl}}{URL endpoint for commenter}
+}
 }
 \description{
-Fetch comments left on TheyWorkForYou
+Get comments left on TheyWorkForYou
 }
 

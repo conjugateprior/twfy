@@ -26,7 +26,9 @@ getDebates(type = c("commons", "westminsterhall", "lords", "scotland",
 \item{num}{Number of results to return}
 }
 \value{
-A complex list of debate information
+A complex data.frame of debate information.  Documentation is somewhat
+        lacking, and many columns contain data.frames so you'll have to dig
+        around.
 }
 \description{
 Get information about parliamentary debates

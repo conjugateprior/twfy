@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getWMS}
 \alias{getWMS}
-\title{Fetch written ministerial responses}
+\title{Get written ministerial responses}
 \usage{
 getWMS(date = NULL, search = NULL, person = NULL, gid = NULL,
   order = c("d", "r"), page = NULL, num = NULL)
@@ -26,6 +26,6 @@ getWMS(date = NULL, search = NULL, person = NULL, gid = NULL,
 A list of information about written ministerial responses
 }
 \description{
-Fetch written ministerial responses
+Get written ministerial responses
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMPInfo}
 \alias{getMPInfo}
-\title{Fetch more information about a Member of Parliament}
+\title{Get more information about a Member of Parliament}
 \usage{
 getMPInfo(id, fields = NULL)
 }

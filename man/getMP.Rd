@@ -21,7 +21,7 @@ the seat is vacant or it before an election}
 a data.frame with rows representing the MP's spells in Parliament
 and columns \itemize{
   \item{\code{member_id} }{Member identifier for each spell in parliament}
-  \item{\code{house} }{1: House of Commons, 2: House of Lords}
+  \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
   \item{\code{constituency} }{Constituency represented}
   \item{\code{party} }{Party}
   \item{\code{entered_house} }{Date MP entered Parliament}

@@ -1,3 +1,7 @@
+ask_for_key <- function(){
+  readline(prompt="Paste in your API key (or just press return to stop) ")
+}
+
 add_key_to_renviron <- function(key){
   dotRenviron <- file.path(normalizePath("~/"), ".Renviron")
   twfy_line <- paste0("TWFY_API_KEY=", key)
@@ -14,10 +18,35 @@ add_key_to_renviron <- function(key){
   }
 }
 
+#' Set the API key
+#'
+#' This function manually sets or resets the API key.  It is mostly useful for
+#' updating your key as all API function calls will ask for a key and store
+#' it locally and in \code{~/.Renviron} any time they do not find one.
+#'
+#' @param api_key a new API key
+#'
+#' @return Nothing
+#' @export
+set_api_key <- function(api_key){
+  Sys.setenv(TWFY_API_KEY=api_key)
+  add_key_to_renviron(api_key)
+}
+
+#' Get the API key
+#'
+#' Get the current API key or request it if not present.  When you provide a key
+#' it will be stored as a local environment variable \code{TWFY_API_KEY} and also
+#' in your \code{~/.Renviron}, making it available for all subsequent R sessions.
+#'
+#' API keys can be requested at \url{http://theyworkforyou.com/api/key}.
+#'
+#' @return The current API key
+#' @export
 get_api_key <- function(){
   key <- Sys.getenv("TWFY_API_KEY")
   if (key == ""){
-    key <- readline(prompt="Paste in your API key (or just press return to stop) ")
+    key <- ask_for_key()
     if (key != ""){
       Sys.setenv(TWFY_API_KEY=key)
       add_key_to_renviron(key)  # and set up for next time
@@ -30,8 +59,8 @@ get_api_key <- function(){
 
 #' Call the API directly
 #'
-#' All the other functions call this one. (It's exported only
-#' for debugging purposes).  Use them instead.
+#' All the other functions call this one - it's exported only
+#' for debugging purposes - so use them instead.
 #'
 #' If you're really curious about implementation, read on.
 #' Each API function introspects to see what its function name
@@ -39,10 +68,10 @@ get_api_key <- function(){
 #' Consequently, aside from a bit of argument checking and/or return value
 #' massaging, every function is implemented exactly the same way.
 #'
-#' @param endpoint function name e.g. 'getConstituencies'
-#' @param ... often optional named arguments
+#' @param endpoint Function name e.g. 'getConstituencies'
+#' @param ... \code{endpoint}'s (often optional) named arguments
 #'
-#' @return the response content, as unserialized by \code{jsonlite::fromJSON}
+#' @return Response content, as unserialized by \code{jsonlite::fromJSON}
 #' @export
 call_api <- function(endpoint, ...){
   q <- list(...)
@@ -54,8 +83,10 @@ call_api <- function(endpoint, ...){
 
   twfy_url <- "https://www.theyworkforyou.com/api/"
   resp <- httr::GET(paste0(twfy_url, endpoint), query=q)
-  if (http_type(resp) != "application/json")
-    stop("API did not return json", call. = FALSE) # did the API change?
+
+  # if (httr::http_type(resp) != "application/json")
+  #   stop("API did not return json", call. = FALSE) # API change?
+  # The server actually offers text/javascript; ; charset=iso-8859-1 :-/
 
   robj <- jsonlite::fromJSON(httr::content(resp))
   # API errors return 200 but provide a field in the json
@@ -77,15 +108,21 @@ params_from_call <- function(mcall){
 #'
 #' @param url url you want to convert
 #'
-#' @return A list containing \code{gid} and \code{url}.
+#' @return A one row data.frame with columns \code{gid} and \code{url}.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' url <- "http://www.publications.parliament.uk/pa/cm201212/cmhansrd/cm120418/debtext/120418-0001.htm#12041847002086"
+#' res <- convertURL(url)
+#' names(res) # gid, url
+#' }
+
 convertURL <- function(url){
   params <- params_from_call(match.call())
-  do.call("call_api", params)
+  res  <- do.call("call_api", params)
+  data.frame(res, stringsAsFactors = FALSE) # for consistency with the rest
 }
-
-## ------
 
 #' Get information for a constituency
 #'
@@ -162,16 +199,19 @@ getGeometry <- function(name){
   data.frame(res, stringsAsFactors = FALSE) # flatten to df
 }
 
-#' Get constituency boundary as a KML file
-#'
-#' NOTE: This is not implemented.
+#' Get constituency boundary information as KML
 #'
 #' @param name Name of constituency
 #'
-#' @return KML file
+#' @return A character vector full of KML (an XML dialect)
+#'
 #' @export
 getBoundary <- function(name){
-  stop("Not yet implemented.")
+  # this is special case because it does not return JSON
+  twfy_url <- "https://www.theyworkforyou.com/api/"
+  resp <- httr::GET(paste0(twfy_url, "getBoundary"),
+                    query=list(key=get_api_key(), name=name))
+  httr::content(resp, as="text")
 }
 
 ## ------
@@ -281,7 +321,7 @@ getMPs <- function(date=NULL, party=NULL, search=NULL){
 #' @return a data.frame with rows representing the MP's spells in Parliament
 #' and columns \itemize{
 #'   \item{\code{member_id} }{Member identifier for each spell in parliament}
-#'   \item{\code{house} }{1: House of Commons, 2: House of Lords}
+#'   \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
 #'   \item{\code{constituency} }{Constituency represented}
 #'   \item{\code{party} }{Party}
 #'   \item{\code{entered_house} }{Date MP entered Parliament}
@@ -304,10 +344,11 @@ getMPs <- function(date=NULL, party=NULL, search=NULL){
 getMP <- function(id=NULL, postcode=NULL, constituency=NULL,
                   always_return=NULL){
   params <- params_from_call(match.call())
-  do.call("call_api", params)
+  res <- do.call("call_api", params)
+  data.frame(res, stringsAsFactors = FALSE)
 }
 
-#' Fetch more information about a Member of Parliament
+#' Get more information about a Member of Parliament
 #'
 #' Unless you want all the four hundred or so fields available about an MP you should
 #' probably specify the ones you want in a comma-separated string to \code{fields}.
@@ -325,7 +366,7 @@ getMPInfo <- function(id, fields=NULL){
   do.call("call_api", params)
 }
 
-#' Fetch more information about a Member of Parliament
+#' Get more information about a Member of Parliament
 #'
 #' @param ids A character vector of comma-separated MP identifiers
 #' @param fields A comma separated character vector of field names
@@ -337,11 +378,27 @@ getMPsInfo <- function(ids, fields=NULL){
   do.call("call_api", params)
 }
 
-#' Fetch information about a person
+#' Get information about a person
 #'
 #' @param id A person identifier
 #'
-#' @return A list of information about a person
+#' @return a data.frame with rows representing the person's spells in the whatever
+#'         legislative body they are members of, with columns \itemize{
+#'   \item{\code{member_id} }{Member identifier for each spell in the Assembly}
+#'   \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
+#'   \item{\code{constituency} }{Constituency represented}
+#'   \item{\code{party} }{Party (in that spell)}
+#'   \item{\code{entered_house} }{Date MP entered Parliament}
+#'   \item{\code{left_house} }{Date MP left Parliament, or 9999-12-31 if still in place}
+#'   \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+#'   \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+#'   \item{\code{title} }{Title, if any}
+#'   \item{\code{given_name} }{First name}
+#'   \item{\code{family_name} }{Family name}
+#'   \item{\code{full_name} }{First name and family name}
+#' }
 #' @export
 getPerson <- function(id){
   params <- params_from_call(match.call())
@@ -349,7 +406,7 @@ getPerson <- function(id){
 }
 
 
-#' Fetch a member of the London Assembly
+#' Get information on a Member of the Legislative Assembly (Northern Ireland)
 #'
 #' @param id A MLA identifier
 #' @param postcode A postcode, which specifies a region represented by the MLA
@@ -357,7 +414,27 @@ getPerson <- function(id){
 #' @param always_return whether to try to return an MP even if
 #'                      the seat is vacant or it before an election
 #'
-#' @return A list of information about an MLA
+#' @return a data.frame with rows representing the MLA's spells in the Assembly
+#' and columns \itemize{
+#'   \item{\code{member_id} }{Member identifier for each spell in the Assembly}
+#'   \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
+#'   \item{\code{constituency} }{Constituency represented}
+#'   \item{\code{party} }{Party}
+#'   \item{\code{entered_house} }{Date MP entered Parliament}
+#'   \item{\code{left_house} }{Date MP left Parliament, or 9999-12-31 if still in place}
+#'   \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+#'   \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+#'   \item{\code{title} }{Title, if any}
+#'   \item{\code{given_name} }{First name}
+#'   \item{\code{family_name} }{Family name}
+#'   \item{\code{full_name} }{First name and family name}
+#'   \item{\code{url} }{URL path relative to TheyWorkForYou's hostname}
+#'   \item{\code{image} }{URL path to jpg relative to TheyWorkForYou's hostname}
+#'   \item{\code{image_height} }{Image height in pixels}
+#'   \item{\code{image_width} }{Image width in pixels}
+#' }
 #' @export
 getMLA <- function(id=NULL,postcode=NULL, constituency=NULL,
                    always_return=NULL){
@@ -365,28 +442,55 @@ getMLA <- function(id=NULL,postcode=NULL, constituency=NULL,
   do.call("call_api", params)
 }
 
-#' Fetch information about MLAs
+#' Get information on Members of the Legislative Assembly (Northern Ireland)
 #'
 #' @param date The date for which the MLAs are required
 #' @param party Restrict MLAs to those in a party
 #' @param search A search string
 #'
-#' @return A list of lists of MLA information
+#' @return A data.frame with columns \itemize{
+#'   \item{\code{member_id} }{Member identifier for each spell in the Legislative Assembly}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{name} }{Full name of MLA}
+#'   \item{\code{party} }{Party represented}
+#'   \item{\code{constituency} }{Name of MLA's constituency}
+#' }
+#
 #' @export
 getMLAs <- function(date=NULL, party=NULL, search=NULL){
   params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
-#' Fetch information on a Member of the Scottish Parliament
+#' Get information on a Member of the Scottish Parliament
 #'
-#' @param id An MSP identifier
+#' @param id Person identifier
 #' @param postcode A postcode, which specifies the constiuency whose MSP is required
 #' @param constituency Name of a constituency
 #' @param always_return whether to try to return an MP even if
 #'                      the seat is vacant or it before an election
 #'
-#' @return A list of information about an MSP
+#' @return a data.frame with rows representing the MP's spells in Parliament
+#' and columns \itemize{
+#'   \item{\code{member_id} }{Member identifier for each spell in parliament}
+#'   \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
+#'   \item{\code{constituency} }{Constituency represented}
+#'   \item{\code{party} }{Party}
+#'   \item{\code{entered_house} }{Date MP entered Parliament}
+#'   \item{\code{left_house} }{Date MP left Parliament, or 9999-12-31 if still in place}
+#'   \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+#'   \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+#'   \item{\code{title} }{Title, if any}
+#'   \item{\code{given_name} }{First name}
+#'   \item{\code{family_name} }{Family name}
+#'   \item{\code{full_name} }{First name and family name}
+#'   \item{\code{url} }{URL path relative to TheyWorkForYou's hostname}
+#'   \item{\code{image} }{URL path to jpg relative to TheyWorkForYou's hostname}
+#'   \item{\code{image_height} }{Image height in pixels}
+#'   \item{\code{image_width} }{Image width in pixels}
+#' }
 #' @export
 getMSP <- function(id=NULL, postcode=NULL, constituency=NULL,
                    always_return=NULL){
@@ -394,20 +498,27 @@ getMSP <- function(id=NULL, postcode=NULL, constituency=NULL,
   do.call("call_api", params)
 }
 
-#' Fetch information about Members of the Scottish Parliament
+#' Get information about Members of the Scottish Parliament
 #'
 #' @param date The date for which the MSPs are required
 #' @param party Restrict MSPs to those in a party
 #' @param search A search string
 #'
-#' @return A list of lists of SP information
+#' @return A data.frame with columns \itemize{
+#'   \item{\code{member_id} }{Member identifier for each spell in the Scottish parliament}
+#'   \item{\code{person_id} }{Person identifier}
+#'   \item{\code{name} }{Full name of MSP}
+#'   \item{\code{party} }{Party represented}
+#'   \item{\code{constituency} }{Name of MSP's constituency}
+#' }
+#'
 #' @export
 getMSPs <- function(date=NULL, party=NULL, search=NULL){
   params <- params_from_call(match.call())
   do.call("call_api", params)
 }
 
-#' Fetch members of a parliamentary select committee
+#' Get members of a Parliamentary Select Committee
 #'
 #' If \code{name} is not specified, all committees and their members are
 #' returned.
@@ -418,7 +529,7 @@ getMSPs <- function(date=NULL, party=NULL, search=NULL){
 #' @param name Name of the committee. Partial names will be matched.
 #' @param date Date for which the committee membership is required
 #'
-#' @return A list of committee members, and also committees if \code{name} is
+#' @return A data.frame of committee members, and also committees if \code{name} is
 #'         not specified.
 #' @export
 getCommittee <- function(name=NULL, date=NULL){
@@ -440,7 +551,9 @@ getCommittee <- function(name=NULL, date=NULL){
 #' @param page which page of results to provide. Defaults to first page
 #' @param num Number of results to return
 #'
-#' @return A complex list of debate information
+#' @return A complex data.frame of debate information.  Documentation is somewhat
+#'         lacking, and many columns contain data.frames so you'll have to dig
+#'         around.
 #' @export
 getDebates <- function(type=c("commons", "westminsterhall", "lords",
                              "scotland", "northernireland"),
@@ -454,6 +567,8 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
 
 #' Get written answers to questions
 #'
+#' The output of this function needs documentation.
+#'
 #' @param date Date for which answers are required
 #' @param search A search string
 #' @param person A person identifier to specify who provided the answers
@@ -462,7 +577,32 @@ getDebates <- function(type=c("commons", "westminsterhall", "lords",
 #' @param page which page of results to provide. Defaults to first page
 #' @param num Number of results to return
 #'
-#' @return A list of written answers information
+#' @return A data.frame with two columns \itemize{
+#'   \item{\code{entry} }{a data.frame}
+#'   \item{\code{subs} }{a data.frame}
+#' }.  The \code{entry} data.frame has columns \itemize{
+#'   \item{\code{epobject_id}}{}
+#'   \item{\code{htype}}{}
+#'   \item{\code{gid}}{}
+#'   \item{\code{hpos}}{}
+#'   \item{\code{section_id}}{}
+#'   \item{\code{subsection_id}}{}
+#'   \item{\code{hdate}}{}
+#'   \item{\code{htime}}{}
+#'   \item{\code{source_url}}{}
+#'   \item{\code{major}}{}
+#'   \item{\code{minor}}{}
+#'   \item{\code{video_status}}{}
+#'   \item{\code{colnum}}{}
+#'   \item{\code{body}}{}
+#' }. \code{subs} is a list containing data.frames with all the columns in
+#'  \code{entry} and in addition \itemize{
+#'    \item{\code{excerpt}}{}
+#'    \item{\code{listurl}}{}
+#'    \item{\code{commentsurl}}{}
+#'    \item{\code{totalcomments}}{}
+#'    \item{\code{comment}}{}
+#'  }
 #' @export
 getWrans <- function(date=NULL, search=NULL, person=NULL,
                      gid=NULL, order=c("d", "r"), page=NULL, num=NULL){
@@ -471,7 +611,7 @@ getWrans <- function(date=NULL, search=NULL, person=NULL,
   do.call("call_api", params)
 }
 
-#' Fetch written ministerial responses
+#' Get written ministerial responses
 #'
 #' @param date Date for which responses are required
 #' @param search A search string
@@ -492,13 +632,15 @@ getWMS <- function(date=NULL, search=NULL, person=NULL,
 
 #' Search Hansard
 #'
+#' This needs much more documentation.
+#'
 #' @param search A search string
 #' @param person A person identifier
 #' @param order whether to order results by date or relevance. Defaults to date
 #' @param page which page of results to provide. Defaults to first page
 #' @param num Number of results to return
 #'
-#' @return A list of search results
+#' @return Search results
 #' @export
 getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
                        page=NULL, num=NULL){
@@ -510,7 +652,7 @@ getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
 ## ------
 
 
-#' Fetch comments left on TheyWorkForYou
+#' Get comments left on TheyWorkForYou
 #'
 #' @param start_date Beginning date
 #' @param end_date End date
@@ -519,7 +661,19 @@ getHansard <- function(search=NULL, person=NULL, order=c("d", "r"),
 #' @param page which page of results to provide. Defaults to first page
 #' @param num Number of results to return
 #'
-#' @return A list of user comments
+#' @return A list containing data.frames with columns \itemize{
+#'   \item{\code{comment_id}}{Comment identifier}
+#'   \item{\code{user_id}}{User identifier}
+#'   \item{\code{epobject_id}}{}
+#'   \item{\code{body}}{Text of comment}
+#'   \item{\code{posted}}{date and time posted}
+#'   \item{\code{major}}{}
+#'   \item{\code{gid}}{}
+#'   \item{\code{firstname}}{Commenter's first name}
+#'   \item{\code{lastname}}{Commenter's last name}
+#'   \item{\code{url}}{URL of the comment}
+#'   \item{\code{useurl}}{URL endpoint for commenter}
+#' }
 #' @export
 getComments <- function(start_date=NULL, end_date=NULL, search=NULL,
                         pid=NULL, page=NULL, num=NULL){

@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMLAs}
 \alias{getMLAs}
-\title{Fetch information about MLAs}
+\title{Get information on Members of the Legislative Assembly (Northern Ireland)}
 \usage{
 getMLAs(date = NULL, party = NULL, search = NULL)
 }
@@ -14,9 +14,15 @@ getMLAs(date = NULL, party = NULL, search = NULL)
 \item{search}{A search string}
 }
 \value{
-A list of lists of MLA information
+A data.frame with columns \itemize{
+  \item{\code{member_id} }{Member identifier for each spell in the Legislative Assembly}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{name} }{Full name of MLA}
+  \item{\code{party} }{Party represented}
+  \item{\code{constituency} }{Name of MLA's constituency}
+}
 }
 \description{
-Fetch information about MLAs
+Get information on Members of the Legislative Assembly (Northern Ireland)
 }
 

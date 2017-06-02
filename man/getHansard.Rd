@@ -19,9 +19,9 @@ getHansard(search = NULL, person = NULL, order = c("d", "r"),
 \item{num}{Number of results to return}
 }
 \value{
-A list of search results
+Search results
 }
 \description{
-Search Hansard
+This needs much more documentation.
 }
 

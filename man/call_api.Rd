@@ -7,16 +7,16 @@
 call_api(endpoint, ...)
 }
 \arguments{
-\item{endpoint}{function name e.g. 'getConstituencies'}
+\item{endpoint}{Function name e.g. 'getConstituencies'}
 
-\item{...}{often optional named arguments}
+\item{...}{\code{endpoint}'s (often optional) named arguments}
 }
 \value{
-the response content, as unserialized by \code{jsonlite::fromJSON}
+Response content, as unserialized by \code{jsonlite::fromJSON}
 }
 \description{
-All the other functions call this one. (It's exported only
-for debugging purposes).  Use them instead.
+All the other functions call this one - it's exported only
+for debugging purposes - so use them instead.
 }
 \details{
 If you're really curious about implementation, read on.

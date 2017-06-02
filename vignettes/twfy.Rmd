@@ -16,8 +16,6 @@ library(twfy)
 
 keighley <- getConstituency("Keighley")
 names(keighley)
-keighley_geo <- getGeometry("Keighley")
-names(keighley_geo)
 ```
 
 Who was the MP before the 2017 election?
@@ -41,12 +39,10 @@ but more lastingly by his person id
 ```{r}
 kh$person_id
 ```
-With his person_id in hand we can get the details of both his spells in the House like this
+With his person_id in hand we can get the details of all of his spells in the House 
+of Commons like this
 ```{r}
 kwper <- getPerson(kh$person_id)
-length(kwper)
-names(kh)
-all(names(kwper[[1]]) == names(kh))
 ```
 Now, what's he been talking about in the House?
 ```{r}
@@ -55,14 +51,7 @@ names(kh_talk)
 names(kh_talk$info) # what we've got to work with
 kh_talk$info$total_results 
 ```
-Let's take a look at the first speech returned
-```{r}
-speech <- kh_talk$rows[[1]]
-names(speech)
-speech$gid # the event identifier
-speech$parent # what was talked about
-speech$extract # a snippet. Full version is in $body
-```
+Let's take a look at the first speech returned.
 
 
 

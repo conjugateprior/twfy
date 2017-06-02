@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getCommittee}
 \alias{getCommittee}
-\title{Fetch members of a parliamentary select committee}
+\title{Get members of a Parliamentary Select Committee}
 \usage{
 getCommittee(name = NULL, date = NULL)
 }
@@ -12,7 +12,7 @@ getCommittee(name = NULL, date = NULL)
 \item{date}{Date for which the committee membership is required}
 }
 \value{
-A list of committee members, and also committees if \code{name} is
+A data.frame of committee members, and also committees if \code{name} is
         not specified.
 }
 \description{

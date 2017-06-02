@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getPerson}
 \alias{getPerson}
-\title{Fetch information about a person}
+\title{Get information about a person}
 \usage{
 getPerson(id)
 }
@@ -10,9 +10,25 @@ getPerson(id)
 \item{id}{A person identifier}
 }
 \value{
-A list of information about a person
+a data.frame with rows representing the person's spells in the whatever
+        legislative body they are members of, with columns \itemize{
+  \item{\code{member_id} }{Member identifier for each spell in the Assembly}
+  \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
+  \item{\code{constituency} }{Constituency represented}
+  \item{\code{party} }{Party (in that spell)}
+  \item{\code{entered_house} }{Date MP entered Parliament}
+  \item{\code{left_house} }{Date MP left Parliament, or 9999-12-31 if still in place}
+  \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+  \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+  \item{\code{title} }{Title, if any}
+  \item{\code{given_name} }{First name}
+  \item{\code{family_name} }{Family name}
+  \item{\code{full_name} }{First name and family name}
+}
 }
 \description{
-Fetch information about a person
+Get information about a person
 }
 

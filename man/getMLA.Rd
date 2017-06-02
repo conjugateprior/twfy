@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getMLA}
 \alias{getMLA}
-\title{Fetch a member of the London Assembly}
+\title{Get information on a Member of the Legislative Assembly (Northern Ireland)}
 \usage{
 getMLA(id = NULL, postcode = NULL, constituency = NULL,
   always_return = NULL)
@@ -18,9 +18,29 @@ getMLA(id = NULL, postcode = NULL, constituency = NULL,
 the seat is vacant or it before an election}
 }
 \value{
-A list of information about an MLA
+a data.frame with rows representing the MLA's spells in the Assembly
+and columns \itemize{
+  \item{\code{member_id} }{Member identifier for each spell in the Assembly}
+  \item{\code{house} }{1: House of Commons, 2: House of Lords, 3: Legislative Assembly (NI), 4: Scottish Parliament}
+  \item{\code{constituency} }{Constituency represented}
+  \item{\code{party} }{Party}
+  \item{\code{entered_house} }{Date MP entered Parliament}
+  \item{\code{left_house} }{Date MP left Parliament, or 9999-12-31 if still in place}
+  \item{\code{entered_reason} }{Reason MP entered, e.g. general_election}
+  \item{\code{left_reason} }{Reason MP left, e.g. general_election_standing}
+  \item{\code{person_id} }{Person identifier}
+  \item{\code{lastupdate} }{When TheyWorkForYou last updated this information}
+  \item{\code{title} }{Title, if any}
+  \item{\code{given_name} }{First name}
+  \item{\code{family_name} }{Family name}
+  \item{\code{full_name} }{First name and family name}
+  \item{\code{url} }{URL path relative to TheyWorkForYou's hostname}
+  \item{\code{image} }{URL path to jpg relative to TheyWorkForYou's hostname}
+  \item{\code{image_height} }{Image height in pixels}
+  \item{\code{image_width} }{Image width in pixels}
+}
 }
 \description{
-Fetch a member of the London Assembly
+Get information on a Member of the Legislative Assembly (Northern Ireland)
 }
 

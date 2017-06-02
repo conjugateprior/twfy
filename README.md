@@ -1,13 +1,27 @@
-# `twfy`
+# `twfy` 
 
-## An R interface to the TheyWorkForYou API
+[![Travis-CI Build Status](https://travis-ci.org/conjugateprior/twfy.svg?branch=master)](https://travis-ci.org/conjugateprior/twfy)
 
-You'll need an API key. Get it 
-[http://www.theyworkforyou.com/api](here). Your first call will prompt you 
-to paste it into the R console, after which it will be available as `Sys.getenv("TWFY_API_KEY")`
+This package wraps TheyWorkForYou's API for R.
 
-API call results are returned as `json` in the background but parsed into 
-possibly nested `list`s and `data.frame`s using `jsonlite` for consumption.
+## Set up
 
-Package documentation is incomplete.  A more nearly complete set of documentation
-can be found at the link above.
+You'll need an API key to. Get it 
+[http://www.theyworkforyou.com/api](here). 
+
+Your first API call (or call to 
+`set_api_key`) will prompt you to paste it into the R console, after which it 
+will be available for all future R sessions.
+
+## Results
+
+API call results typically returned as `json` in the background 
+but parsed into nested `data.frame`s and `list`s using `jsonlite`.  
+One exception is `getBoundary` which returns a string of KML.
+
+## Documentation
+
+Package documentation is incomplete.  A more nearly but still not complete set 
+of documentation can be found at the link above.
+
+

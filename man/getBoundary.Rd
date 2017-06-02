@@ -2,7 +2,7 @@
 % Please edit documentation in R/twfy.R
 \name{getBoundary}
 \alias{getBoundary}
-\title{Get constituency boundary as a KML file}
+\title{Get constituency boundary information as KML}
 \usage{
 getBoundary(name)
 }
@@ -10,9 +10,9 @@ getBoundary(name)
 \item{name}{Name of constituency}
 }
 \value{
-KML file
+A character vector full of KML (an XML dialect)
 }
 \description{
-NOTE: This is not implemented.
+Get constituency boundary information as KML
 }
 
