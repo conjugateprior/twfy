@@ -1,6 +1,6 @@
 ## Test environments
 
-* local OS X install, R 3.3.2
+* local OS X install, R 3.4.0
 * ubuntu 12.04.5 (on travis-ci), R 3.4.0
 * win-builder (devel and release)
 
@@ -8,7 +8,7 @@
 
 There were no ERRORs or WARNINGs.
 
-There was 1 NOTE:
+There was 1 NOTE (on win-builder only):
 
 * Possibly mis-spelled words in DESCRIPTION:
     API (2:18, 5:36)

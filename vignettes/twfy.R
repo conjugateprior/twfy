@@ -1,11 +1,18 @@
+## ----include=FALSE-------------------------------------------------------
+# real API access requires a key so these are prefetched 
+# results from June 23, 2017
+load('prefetched.rda')
+
 ## ------------------------------------------------------------------------
 library(twfy)
 
-keighley <- getConstituency("Keighley")
-names(keighley)
+## ---- eval=FALSE---------------------------------------------------------
+#  keighley <- getConstituency("Keighley")
+
+## ---- eval=FALSE---------------------------------------------------------
+#  mp <- getMP(postcode="BD21 2DH")
 
 ## ------------------------------------------------------------------------
-mp <- getMP(postcode="BD21 2DH")
 mp$full_name
 
 ## ------------------------------------------------------------------------
@@ -20,11 +27,13 @@ mp$member_id
 ## ------------------------------------------------------------------------
 mp$person_id
 
-## ------------------------------------------------------------------------
-mp_per <- getPerson(mp$person_id)
+## ---- eval=FALSE---------------------------------------------------------
+#  mp_per <- getPerson(mp$person_id)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  mp_talk <- getDebates(person=mp$person_id)
 
 ## ------------------------------------------------------------------------
-mp_talk<- getDebates(person=mp$person_id)
 names(mp_talk)
 names(mp_talk$info) # what we've got to work with
 
