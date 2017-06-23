@@ -10,24 +10,34 @@ vignette: >
 ---
 
 
-In this vignette we take a cursory look at the MP for Keighley, West Yorkshire.
-```{r}
-library(twfy)
-
-keighley <- getConstituency("Keighley")
-names(keighley)
+```{r,include=FALSE}
+# real API access requires a key so these are prefetched 
+# results from June 23, 2017
+load('prefetched.rda')
 ```
 
-Who is the current MP?  We'll use the postcode lookup
+In this vignette we use `twfy` to take a look at the MP for Keighley, West Yorkshire.
 ```{r}
+library(twfy)
+```
+We can get its detailed by name or by any postcode
+```{r, eval=FALSE}
+keighley <- getConstituency("Keighley")
+```
+
+Who is the current MP?  This time we'll use the postcode lookup
+```{r, eval=FALSE}
 mp <- getMP(postcode="BD21 2DH")
+```
+Keighley's MP is 
+```{r}
 mp$full_name
 ```
 He's a member of the Labour Party
 ```{r}
 mp$party
 ```
-Since we're in England he's in the House of Commons, represented as 1.
+and since we're in England he's in the House of Commons, represented as 1.
 ```{r}
 mp$house
 ```
@@ -41,12 +51,15 @@ mp$person_id
 ```
 With `person_id` we can get the details of all of his spells in the House 
 of Commons like this
-```{r}
+```{r, eval=FALSE}
 mp_per <- getPerson(mp$person_id)
 ```
 Now, what's he been talking about in Parliamentary debates?
+```{r, eval=FALSE}
+mp_talk <- getDebates(person=mp$person_id)
+```
+Debate results are fairly structured objects
 ```{r}
-mp_talk<- getDebates(person=mp$person_id)
 names(mp_talk)
 names(mp_talk$info) # what we've got to work with
 ```
