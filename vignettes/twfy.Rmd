@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-In this vignette we take a cursory look at the Keighley, West Yorkshire.
+In this vignette we take a cursory look at the MP for Keighley, West Yorkshire.
 ```{r}
 library(twfy)
 
