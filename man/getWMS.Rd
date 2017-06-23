@@ -14,7 +14,7 @@ getWMS(date = NULL, search = NULL, person = NULL, gid = NULL,
 
 \item{person}{A person identifier to specify which minister provided the answers}
 
-\item{gid}{A reponse identifier to return}
+\item{gid}{A response identifier to return}
 
 \item{order}{whether to order results by date or relevance. Defaults to date}
 
@@ -28,4 +28,3 @@ A list of information about written ministerial responses
 \description{
 Get written ministerial responses
 }
-

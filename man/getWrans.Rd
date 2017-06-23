@@ -53,4 +53,3 @@ A data.frame with two columns \itemize{
 \description{
 The output of this function needs documentation.
 }
-

@@ -15,7 +15,7 @@ a data.frame with columns
   \item{\code{member_id} }{Member identifier}
   \item{\code{house} }{Which chamber 1: The House of Commons,
                       2: The House of Lords.}
-  \item{\code{constituency} }{Consituency represented}
+  \item{\code{constituency} }{Constituency represented}
   \item{\code{party} }{Party}
   \item{\code{entered_house} }{Date when entered the House of Lords}
   \item{\code{left_house} }{Date when left the House of Lords or
@@ -34,4 +34,3 @@ a data.frame with columns
 \description{
 Get information about a Lord
 }
-

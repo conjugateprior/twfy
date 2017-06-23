@@ -17,4 +17,3 @@ in your \code{~/.Renviron}, making it available for all subsequent R sessions.
 \details{
 API keys can be requested at \url{http://theyworkforyou.com/api/key}.
 }
-

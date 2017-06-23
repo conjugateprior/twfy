@@ -17,4 +17,3 @@ This function manually sets or resets the API key.  It is mostly useful for
 updating your key as all API function calls will ask for a key and store
 it locally and in \code{~/.Renviron} any time they do not find one.
 }
-

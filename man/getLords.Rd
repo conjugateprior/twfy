@@ -35,4 +35,3 @@ A data.frame with columns
 \description{
 Get information about Lords
 }
-

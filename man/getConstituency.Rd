@@ -27,4 +27,3 @@ A data.frame with columns
 \description{
 Get information for a constituency
 }
-

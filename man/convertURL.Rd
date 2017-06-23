@@ -28,4 +28,3 @@ res <- convertURL(address)
 names(res) # gid, url
 }
 }
-

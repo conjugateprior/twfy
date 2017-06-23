@@ -31,10 +31,9 @@ A data.frame with columns \itemize{
 \description{
 From TheyWorkForYou: "This currently includes, for Great Britain,
 the latitude and longitude of the centre point of the bounding box
-of the constituency, its area in square metres, the bounding box itself
+of the constituency, its area in square meters, the bounding box itself
 and the number of parts in the polygon that makes up the constituency.
 For Northern Ireland, as we don't have any better data, it only returns
 an approximate (estimated by eye) latitude and longitude for the
 constituency's centroid."
 }
-

@@ -21,4 +21,3 @@ probably specify the ones you want in a comma-separated string to \code{fields}.
 \details{
 Note that unlike other functions in this package the result is a list
 }
-

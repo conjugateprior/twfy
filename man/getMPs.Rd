@@ -19,7 +19,7 @@ a data.frame with columns \itemize{
  \item{\code{person_id} }{Person identifier}
  \item{\code{name} }{MP's first names then family name}
  \item{\code{party} }{Party}
- \item{\code{constituency} }{Consituency represented}
+ \item{\code{constituency} }{Constituency represented}
  \item{\code{office} }{NULL if no offices held, or a list with one
     element: a data.frame with column headings:
     \itemize{
@@ -35,4 +35,3 @@ a data.frame with columns \itemize{
 \description{
 Get information about Members of Parliament
 }
-

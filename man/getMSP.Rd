@@ -43,4 +43,3 @@ and columns \itemize{
 \description{
 Get information on a Member of the Scottish Parliament
 }
-

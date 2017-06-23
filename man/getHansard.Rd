@@ -24,4 +24,3 @@ Search results
 \description{
 This needs much more documentation.
 }
-

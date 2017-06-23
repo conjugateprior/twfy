@@ -11,4 +11,3 @@ allowing queries using the verbs described at
 \url{http://theyworkforyou.com/api/}.  This should be your primary
 source of documentation as the package develops.
 }
-

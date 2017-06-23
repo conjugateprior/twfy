@@ -25,4 +25,3 @@ is, bundles up its named arguments, and calls this function with them.
 Consequently, aside from a bit of argument checking and/or return value
 massaging, every function is implemented exactly the same way.
 }
-

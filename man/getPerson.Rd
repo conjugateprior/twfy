@@ -31,4 +31,3 @@ a data.frame with rows representing the person's spells in the whatever
 \description{
 Get information about a person
 }
-

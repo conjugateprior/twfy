@@ -25,4 +25,3 @@ A data.frame with columns \itemize{
 \description{
 Get information on Members of the Legislative Assembly (Northern Ireland)
 }
-

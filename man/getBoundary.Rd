@@ -15,4 +15,3 @@ A character vector full of KML (an XML dialect)
 \description{
 Get constituency boundary information as KML
 }
-

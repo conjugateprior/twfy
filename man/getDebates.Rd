@@ -33,4 +33,3 @@ A complex data.frame of debate information.  Documentation is somewhat
 \description{
 Get information about parliamentary debates
 }
-

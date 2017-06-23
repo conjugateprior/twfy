@@ -25,4 +25,3 @@ A data.frame with columns \itemize{
 \description{
 Get information about Members of the Scottish Parliament
 }
-
