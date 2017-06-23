@@ -15,13 +15,13 @@ will be available for all future R sessions.
 
 ## Results
 
-API call results typically returned as `json` in the background 
-but parsed into nested `data.frame`s and `list`s using `jsonlite`.  
+While API call results typically returned as `json` in the background 
+they are parsed into nested `data.frame`s and `list`s using `jsonlite`.  
 One exception is `getBoundary` which returns a string of KML.
 
 ## Documentation
 
-Package documentation is incomplete.  A more nearly but still not complete set 
-of documentation can be found at the link above.
+Package documentation is incomplete.  A more nearly complete set 
+of documentation can be found from the [API source](http://www.theyworkforyou.com/api).
 
 
