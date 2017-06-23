@@ -261,7 +261,7 @@ getLords <- function(date=NULL, party=NULL, search=NULL){
 #'   \item{\code{member_id} }{Member identifier}
 #'   \item{\code{house} }{Which chamber 1: The House of Commons,
 #'                       2: The House of Lords.}
-#'   \item{\code{constituency} }{Consituency represented}
+#'   \item{\code{constituency} }{Constituency represented}
 #'   \item{\code{party} }{Party}
 #'   \item{\code{entered_house} }{Date when entered the House of Lords}
 #'   \item{\code{left_house} }{Date when left the House of Lords or
@@ -293,7 +293,7 @@ getLord <- function(id){
 #'  \item{\code{person_id} }{Person identifier}
 #'  \item{\code{name} }{MP's first names then family name}
 #'  \item{\code{party} }{Party}
-#'  \item{\code{constituency} }{Consituency represented}
+#'  \item{\code{constituency} }{Constituency represented}
 #'  \item{\code{office} }{NULL if no offices held, or a list with one
 #'     element: a data.frame with column headings:
 #'     \itemize{
@@ -621,7 +621,7 @@ getWrans <- function(date=NULL, search=NULL, person=NULL,
 #' @param date Date for which responses are required
 #' @param search A search string
 #' @param person A person identifier to specify which minister provided the answers
-#' @param gid A reponse identifier to return
+#' @param gid A response identifier to return
 #' @param order whether to order results by date or relevance. Defaults to date
 #' @param page which page of results to provide. Defaults to first page
 #' @param num Number of results to return
