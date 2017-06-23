@@ -113,8 +113,13 @@ params_from_call <- function(mcall){
 #'
 #' @examples
 #' \dontrun{
-#' url <- "http://www.publications.parliament.uk/pa/cm201212/cmhansrd/cm120418/debtext/120418-0001.htm#12041847002086"
-#' res <- convertURL(url)
+#'
+#' site <- "http://www.publications.parliament.uk"
+#' page <- "/pa/cm201212/cmhansrd/cm120418/debtext/120418-0001.htm"
+#' in_page <- "#12041847002086"
+#' address <- paste0(site, page, in_page)
+#'
+#' res <- convertURL(address)
 #' names(res) # gid, url
 #' }
 

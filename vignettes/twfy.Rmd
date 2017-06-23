@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-Let's take a look at Keighley
+In this vignette we take a cursory look at the Keighley, West Yorkshire.
 ```{r}
 library(twfy)
 
@@ -18,40 +18,64 @@ keighley <- getConstituency("Keighley")
 names(keighley)
 ```
 
-Who was the MP before the 2017 election?
+Who is the current MP?  We'll use the postcode lookup
 ```{r}
-kh <- getMP(postcode="BD21 2DH", always_return=TRUE)
-kh$full_name
+mp <- getMP(postcode="BD21 2DH")
+mp$full_name
 ```
-He's a Conservative 
+He's a member of the Labour Party
 ```{r}
-kh$party
+mp$party
 ```
-in the House of Commons
+Since we're in England he's in the House of Commons, represented as 1.
 ```{r}
-kh$house
+mp$house
 ```
 We can find him with two identifiers, the identifier for his current term in office
 ```{r}
-kh$member_id
+mp$member_id
 ```
 but more lastingly by his person id
 ```{r}
-kh$person_id
+mp$person_id
 ```
-With his person_id in hand we can get the details of all of his spells in the House 
+With `person_id` we can get the details of all of his spells in the House 
 of Commons like this
 ```{r}
-kwper <- getPerson(kh$person_id)
+mp_per <- getPerson(mp$person_id)
 ```
-Now, what's he been talking about in the House?
+Now, what's he been talking about in Parliamentary debates?
 ```{r}
-kh_talk<- getDebates(person="24923")
-names(kh_talk)
-names(kh_talk$info) # what we've got to work with
-kh_talk$info$total_results 
+mp_talk<- getDebates(person=mp$person_id)
+names(mp_talk)
+names(mp_talk$info) # what we've got to work with
 ```
-Let's take a look at the first speech returned.
+the output is paged, so there are
+```{r}
+mp_talk$info$total_results
+```
+entries, of which we are seeing from 
+```{r}
+mp_talk$info$results_per_page
+```
+counting from
+```{r}
+mp_talk$info$first_result
+```
+to get the second page, we'd call `getDebates` again specifying `page=2`.
 
-
-
+Let's take a look at the first recorded entry
+```{r}
+first_entry <- mp_talk$rows[1,]
+first_entry$hdate
+```
+clarifying an important issue
+```{r}
+first_entry$body
+```
+The `speaker` field embeds a data.frame with the speaker's details,
+from which we note that he was not representing Keighley at that 
+time but rather
+```{r}
+first_entry$speaker$constituency
+```
