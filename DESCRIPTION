@@ -2,7 +2,12 @@ Package: twfy
 Title: Drive the API for TheyWorkForYou
 Version: 0.1.0
 Authors@R: person("Will", "Lowe", email = "wlowe@princeton.edu", role = c("aut", "cre"))
-Description: An R interface to the API for TheyWorkForYou.
+Description: An R wrapper around the API of TheyWorkForYou, a parliamentary 
+    monitoring site that scrapes and repackages Hansard (the UK's parliamentary 
+    record) and augments it with information from the Register of Members' 
+    Interests, election results, and voting records to provide a unified 
+    source of information about UK legislators and their activities. See 
+    <http://www.theyworkforyou.com> for details.
 Depends:
     R (>= 3.0.0)
 License: GPL-3
