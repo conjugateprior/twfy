@@ -4,6 +4,11 @@
 * ubuntu 12.04.5 (on travis-ci), R 3.4.0
 * win-builder (devel and release)
 
+## Previous CRAN comments
+
+* Per Hornik request DESCRIPTION is now more descriptive and contains a link
+  to the API source for more details.
+
 ## R CMD check results
 
 There were no ERRORs or WARNINGs.
