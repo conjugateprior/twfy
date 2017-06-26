@@ -44,14 +44,7 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/conjugateprior/twfy">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -66,62 +59,62 @@
       <h1>Using twfy to access TheyWorkForYou</h1>
                         <h4 class="author">Will Lowe</h4>
             
-            <h4 class="date">2017-06-24</h4>
+            <h4 class="date">2017-06-26</h4>
           </div>
 
     
     
 <div class="contents">
 <p>In this vignette we use <code>twfy</code> to take a look at the MP for Keighley, West Yorkshire.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(twfy)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(twfy)</code></pre>
 <p>We can get its detailed by name or by any postcode</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keighley &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getConstituency.html">getConstituency</a></span>(<span class="st">"Keighley"</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">keighley &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getConstituency.html">getConstituency</a></span>(<span class="st">"Keighley"</span>)</code></pre>
 <p>Who is the current MP? This time we’ll use the postcode lookup</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMP.html">getMP</a></span>(<span class="dt">postcode=</span><span class="st">"BD21 2DH"</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMP.html">getMP</a></span>(<span class="dt">postcode=</span><span class="st">"BD21 2DH"</span>)</code></pre>
 <p>Keighley’s MP is</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp$full_name</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp$full_name</code></pre>
 <pre><code>## [1] "John Grogan"</code></pre>
 <p>He’s a member of the Labour Party</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp$party</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp$party</code></pre>
 <pre><code>## [1] "Labour"</code></pre>
 <p>and since we’re in England he’s in the House of Commons, represented as 1.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp$house</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp$house</code></pre>
 <pre><code>## [1] "1"</code></pre>
 <p>We can find him with two identifiers, the identifier for his current term in office</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp$member_id</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp$member_id</code></pre>
 <pre><code>## [1] "41872"</code></pre>
 <p>but more lastingly by his person id</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp$person_id</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp$person_id</code></pre>
 <pre><code>## [1] "10248"</code></pre>
 <p>With <code>person_id</code> we can get the details of all of his spells in the House of Commons like this</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp_per &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getPerson.html">getPerson</a></span>(mp$person_id)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp_per &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getPerson.html">getPerson</a></span>(mp$person_id)</code></pre>
 <p>Now, what’s he been talking about in Parliamentary debates?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp_talk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getDebates.html">getDebates</a></span>(<span class="dt">person=</span>mp$person_id)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp_talk &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getDebates.html">getDebates</a></span>(<span class="dt">person=</span>mp$person_id)</code></pre>
 <p>Debate results are fairly structured objects</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(mp_talk)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(mp_talk)</code></pre>
 <pre><code>## [1] "info"              "searchdescription" "rows"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(mp_talk$info) <span class="co"># what we've got to work with</span></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(mp_talk$info) <span class="co"># what we've got to work with</span></code></pre>
 <pre><code>## [1] "s"                   "results_per_page"    "page"               
 ## [4] "first_result"        "total_results"       "spelling_correction"</code></pre>
 <p>the output is paged, so there are</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$total_results</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$total_results</code></pre>
 <pre><code>## [1] 519</code></pre>
 <p>entries, of which we are seeing from</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$results_per_page</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$results_per_page</code></pre>
 <pre><code>## [1] 20</code></pre>
 <p>counting from</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$first_result</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mp_talk$info$first_result</code></pre>
 <pre><code>## [1] 1</code></pre>
 <p>to get the second page, we’d call <code>getDebates</code> again specifying <code>page=2</code>.</p>
 <p>Let’s take a look at the first recorded entry</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">first_entry &lt;-<span class="st"> </span>mp_talk$rows[<span class="dv">1</span>,]
-first_entry$hdate</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">first_entry &lt;-<span class="st"> </span>mp_talk$rows[<span class="dv">1</span>,]
+first_entry$hdate</code></pre>
 <pre><code>## [1] "2010-04-08"</code></pre>
 <p>clarifying an important issue</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">first_entry$body</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">first_entry$body</code></pre>
 <pre><code>## [1] "&lt;p pid=\"b.1177.6/1\"&gt;Will the Secretary of State say a few words about the impact of the proposed level of feed-in tariffs on the development of anaerobic digestion plants such as the proposed Selby renewable energy plant, which is set to power 10,000 homes in the town?&lt;/p&gt;"</code></pre>
 <p>The <code>speaker</code> field embeds a data.frame with the speaker’s details, from which we note that he was not representing Keighley at that time but rather</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">first_entry$speaker$constituency</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">first_entry$speaker$constituency</code></pre>
 <pre><code>## [1] "Selby"</code></pre>
 </div>
   </div>

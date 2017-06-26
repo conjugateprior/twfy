@@ -12,8 +12,7 @@ their activities.
 
 ## Set up
 
-You'll need an API key to. Get it 
-[here](http://www.theyworkforyou.com/api). 
+You'll need an API key to. Get it [here](http://www.theyworkforyou.com/api). 
 
 Your first API call (or call to `set_api_key`) will prompt you to
 paste it into the R console, after which it will be available for all
@@ -22,13 +21,17 @@ future R sessions.
 ## Installation
 
 Install `twfy` using `devtools`:
-```{r}
+
+```
 devtools::install_github("conjugateprior/twfy")
 ```
+
 If this does not work
-```{r}
+
+```
 install.packages("devtools")
 ```
+
 and try again.
 
 ## Results
