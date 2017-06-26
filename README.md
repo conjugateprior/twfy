@@ -1,6 +1,6 @@
 # `twfy` 
 
-[![Travis-CI Build Status](https://travis-ci.org/conjugateprior/twfy.svg?branch=master)](https://travis-ci.org/conjugateprior/twfy) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/twfy)](https://cran.r-project.org/package=twfy)
+[![Travis-CI Build Status](https://travis-ci.org/conjugateprior/twfy.svg?branch=master)](https://travis-ci.org/conjugateprior/twfy) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/twfy)](https://cran.r-project.org/package=twfy) [![](http://cranlogs.r-pkg.org/badges/twfy)](http://cran.rstudio.com/web/packages/twfy/index.html)
 
 This package wraps TheyWorkForYou's API for R.
 [TheyWorkForYou](http://www.theyworkforyou.com) is a parliamentary
