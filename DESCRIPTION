@@ -8,7 +8,7 @@ Description: An R wrapper around the API of TheyWorkForYou, a parliamentary
     Interests, election results, and voting records to provide a unified 
     source of information about UK legislators and their activities. See 
     <http://www.theyworkforyou.com> for details.
-URL: https://github.com/conjugateprior/twfy
+URL: https://conjugateprior.github.io/twfy
 BugReports: https://github.com/conjugateprior/twfy/issues
 Depends:
     R (>= 3.0.0)
