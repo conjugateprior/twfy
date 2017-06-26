@@ -70,16 +70,9 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install <code>twfy</code> using <code>devtools</code>:</p>
+<pre><code>install.packages("twfy")</code></pre>
+<p>or you can install the latest develeopment version from Github using <code>devtools</code>:</p>
 <pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("conjugateprior/twfy")</a></code></pre>
-<p>If this does not work</p>
-<pre><code>install.packages("devtools")</code></pre>
-<p>and try again.</p>
-</div>
-<div id="results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#results" class="anchor"></a>Results</h2>
-<p>In general, API call results are returned as <code>json</code>, then parsed into nested <code>data.frame</code>s and <code>list</code>s using <code>jsonlite</code>. One exception is <code>getBoundary</code> which returns a string of KML.</p>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -92,6 +85,8 @@
   <div class="col-md-3" id="sidebar">
     <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=twfy">https://​cran.r-project.org/​package=twfy</a>
+</li>
 <li>Browse source code at <br><a href="https://conjugateprior.github.io/twfy">https://​conjugateprior.github.io/​twfy</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/conjugateprior/twfy/issues">https://​github.com/​conjugateprior/​twfy/​issues</a>
@@ -105,7 +100,8 @@
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/conjugateprior/twfy"><embed src="https://travis-ci.org/conjugateprior/twfy.svg?branch=master"></embed></a></li>
+<li><a href="https://travis-ci.org/conjugateprior/twfy"><img src="https://travis-ci.org/conjugateprior/twfy.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=twfy"><img src="http://www.r-pkg.org/badges/version/twfy" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 </div>

@@ -1,6 +1,6 @@
 # `twfy` 
 
-[![Travis-CI Build Status](https://travis-ci.org/conjugateprior/twfy.svg?branch=master)](https://travis-ci.org/conjugateprior/twfy)
+[![Travis-CI Build Status](https://travis-ci.org/conjugateprior/twfy.svg?branch=master)](https://travis-ci.org/conjugateprior/twfy) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/twfy)](https://cran.r-project.org/package=twfy)
 
 This package wraps TheyWorkForYou's API for R.
 [TheyWorkForYou](http://www.theyworkforyou.com) is a parliamentary
@@ -20,25 +20,13 @@ future R sessions.
 
 ## Installation
 
-Install `twfy` using `devtools`:
-
+```
+install.packages("twfy")
+```
+or you can install the latest develeopment version from Github using `devtools`:
 ```
 devtools::install_github("conjugateprior/twfy")
 ```
-
-If this does not work
-
-```
-install.packages("devtools")
-```
-
-and try again.
-
-## Results
-
-In general, API call results are returned as `json`, then parsed into
-nested `data.frame`s and `list`s using `jsonlite`.  One exception is
-`getBoundary` which returns a string of KML.
 
 ## Documentation
 
