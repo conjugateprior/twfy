@@ -10,7 +10,7 @@ getMSP(id = NULL, postcode = NULL, constituency = NULL,
 \arguments{
 \item{id}{Person identifier}
 
-\item{postcode}{A postcode, which specifies the constiuency whose MSP is required}
+\item{postcode}{A postcode, which specifies the constituency whose MSP is required}
 
 \item{constituency}{Name of a constituency}
 

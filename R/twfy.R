@@ -165,8 +165,6 @@ getConstituencies <- function(date=NULL, search=NULL){
   do.call("call_api", params)
 }
 
-## ------
-
 #' Return geometry information for a constituency
 #'
 #' From TheyWorkForYou: "This currently includes, for Great Britain,
@@ -470,7 +468,7 @@ getMLAs <- function(date=NULL, party=NULL, search=NULL){
 #' Get information on a Member of the Scottish Parliament
 #'
 #' @param id Person identifier
-#' @param postcode A postcode, which specifies the constiuency whose MSP is required
+#' @param postcode A postcode, which specifies the constituency whose MSP is required
 #' @param constituency Name of a constituency
 #' @param always_return whether to try to return an MP even if
 #'                      the seat is vacant or it before an election
