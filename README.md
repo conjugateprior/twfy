@@ -33,9 +33,9 @@ and try again.
 
 ## Results
 
-While API call results typically returned as `json` in the background 
-they are parsed into nested `data.frame`s and `list`s using `jsonlite`.  
-One exception is `getBoundary` which returns a string of KML.
+In general, API call results are returned as `json`, then parsed into
+nested `data.frame`s and `list`s using `jsonlite`.  One exception is
+`getBoundary` which returns a string of KML.
 
 ## Documentation
 
