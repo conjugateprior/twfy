@@ -1,6 +1,6 @@
 Package: twfy
 Title: Drive the API for TheyWorkForYou
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Will", "Lowe", email = "wlowe@princeton.edu", role = c("aut", "cre"))
 Description: An R wrapper around the API of TheyWorkForYou, a parliamentary 
     monitoring site that scrapes and repackages Hansard (the UK's parliamentary 
@@ -18,7 +18,7 @@ LazyData: true
 Imports:
     httr,
     jsonlite
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests:
     knitr,
     rmarkdown

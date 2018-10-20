@@ -4,10 +4,10 @@
 \alias{getMPsInfo}
 \title{Get more information about a Member of Parliament}
 \usage{
-getMPsInfo(ids, fields = NULL)
+getMPsInfo(id, fields = NULL)
 }
 \arguments{
-\item{ids}{A character vector of comma-separated MP identifiers}
+\item{id}{A character vector of comma-separated MP identifiers}
 
 \item{fields}{A comma separated character vector of field names}
 }
