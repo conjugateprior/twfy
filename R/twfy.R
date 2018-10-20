@@ -371,12 +371,12 @@ getMPInfo <- function(id, fields=NULL){
 
 #' Get more information about a Member of Parliament
 #'
-#' @param ids A character vector of comma-separated MP identifiers
+#' @param id A character vector of comma-separated MP identifiers
 #' @param fields A comma separated character vector of field names
 #'
 #' @return A list of list of MP information
 #' @export
-getMPsInfo <- function(ids, fields=NULL){
+getMPsInfo <- function(id, fields=NULL){
   params <- params_from_call(match.call())
   do.call("call_api", params)
 }
